@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manulife One Refi Calculator | FMFS</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --green:      #009A44;
+  --green-dark: #005525;
+  --green-light:#E8F5ED;
+  --red:        #c0392b;
+  --red-light:  #fdecea;
+  --blue:       #2c3e6b;
+  --gold:       #d4a017;
+  --text:       #1a1a2e;
+  --text-light: #5a6070;
+  --bg:         #f2f4f7;
+  --white:      #ffffff;
+  --border:     #dde3ea;
+  --shadow:     0 2px 16px rgba(0,0,0,0.07);
+  --radius:     10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;}
+
+/* HEADER */
+.hdr{background:var(--blue);color:white;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.hdr-logo{font-size:1rem;font-weight:800;letter-spacing:-0.3px;}
+.hdr-logo span{opacity:0.65;font-weight:400;font-size:0.82rem;}
+.hdr-right{font-size:0.75rem;opacity:0.8;text-align:right;line-height:1.6;}
+.hdr-right a{color:#7de8a8;text-decoration:none;font-weight:600;}
+
+/* TITLE BAR */
+.title-bar{background:linear-gradient(135deg,var(--green-dark),var(--green));color:white;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.title-bar h1{font-size:1.15rem;font-weight:800;}
+.title-bar p{font-size:0.78rem;opacity:0.85;}
+
+/* LAYOUT */
+.main{max-width:1380px;margin:0 auto;padding:16px;}
+
+/* INPUT GRID */
+.input-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:18px;}
+.icard{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+.icard-hdr{background:var(--text);color:white;padding:9px 14px;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;}
+.icard-hdr.green{background:var(--green-dark);}
+.icard-hdr.blue{background:var(--blue);}
+.icard-body{padding:14px;}
+.ig{margin-bottom:10px;}
+.ig:last-child{margin-bottom:0;}
+.ig label{display:block;font-size:0.7rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;}
+.ir{display:flex;align-items:center;gap:3px;background:var(--bg);border:1.5px solid var(--border);border-radius:6px;padding:0 10px;transition:border-color 0.2s;}
+.ir:focus-within{border-color:var(--green);box-shadow:0 0 0 2px rgba(0,154,68,0.1);}
+.ir .p,.ir .s{color:var(--text-light);font-size:0.82rem;flex-shrink:0;}
+.ir input{flex:1;border:none;background:transparent;padding:7px 3px;font-size:0.88rem;color:var(--text);outline:none;min-width:0;}
+.ir input[type=text]{font-size:0.82rem;}
+.ir-2col{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+
+/* SCENARIO GRID */
+.scenario-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+@media(max-width:900px){.scenario-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:580px){.scenario-grid{grid-template-columns:1fr;}}
+
+.scard{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;border-top:4px solid var(--border);}
+.scard.m1{border-top-color:var(--green);}
+.scard.current{border-top-color:var(--red);}
+.scard-hdr{padding:10px 14px;font-size:0.78rem;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-light);background:#f8f9fa;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;}
+.scard-hdr.m1{background:var(--green-light);color:var(--green-dark);}
+.scard-hdr.current{background:var(--red-light);color:var(--red);}
+.scard-body{padding:0;}
+
+/* Editable scenario name */
+.sc-name-input{background:transparent;border:none;font-size:0.78rem;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;color:inherit;outline:none;width:calc(100% - 20px);}
+
+.row{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-bottom:1px solid var(--border);}
+.row:last-child{border-bottom:none;}
+.row .rk{font-size:0.72rem;font-weight:600;color:var(--text-light);}
+.row .rv{font-size:0.82rem;font-weight:700;color:var(--text);text-align:right;}
+.row .rv.green{color:var(--green);}
+.row .rv.red{color:var(--red);}
+.row .rv.blue{color:var(--blue);}
+.row-section{padding:7px 14px 4px;background:#f8f9fa;border-bottom:1px solid var(--border);}
+.row-section span{font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);}
+.row-highlight{background:var(--green-light);}
+.row-highlight .rk{color:var(--green-dark);}
+.row-highlight .rv{color:var(--green-dark);}
+.row-red{background:var(--red-light);}
+.row-red .rk{color:var(--red);}
+.row-red .rv{color:var(--red);}
+
+/* M1 NUMBER BANNER */
+.m1-banner{background:linear-gradient(135deg,var(--green-dark),var(--green));color:white;border-radius:var(--radius);padding:20px 28px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;box-shadow:0 4px 20px rgba(0,154,68,0.3);}
+.m1-num-block{text-align:center;}
+.m1-num-block .lbl{font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;opacity:0.8;}
+.m1-num-block .val{font-size:2.4rem;font-weight:800;line-height:1.1;margin:6px 0 2px;}
+.m1-num-block .sub{font-size:0.78rem;opacity:0.85;}
+.m1-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1;}
+.m1-stat{background:rgba(255,255,255,0.15);border-radius:8px;padding:12px 14px;text-align:center;}
+.m1-stat .sl{font-size:0.68rem;text-transform:uppercase;letter-spacing:1px;opacity:0.75;margin-bottom:4px;}
+.m1-stat .sv{font-size:1.15rem;font-weight:800;line-height:1.1;}
+.m1-stat .ss{font-size:0.72rem;opacity:0.8;margin-top:2px;}
+
+/* COMPARISON TABLE */
+.compare-wrap{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:18px;}
+.compare-wrap table{width:100%;border-collapse:collapse;}
+.compare-wrap th{padding:10px 14px;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;text-align:left;}
+.compare-wrap th.current-col{background:var(--red-light);color:var(--red);}
+.compare-wrap th.s1,th.s2,th.s3{background:#eef1f5;color:var(--text-light);}
+.compare-wrap th.m1-col{background:var(--green);color:white;}
+.compare-wrap td{padding:9px 14px;border-top:1px solid var(--border);font-size:0.82rem;}
+.compare-wrap td.m1-col{background:var(--green-light);font-weight:700;color:var(--green-dark);}
+.compare-wrap td.current-col{color:var(--red);font-weight:600;}
+.compare-wrap tr.section-row td{background:#f8f9fa;font-size:0.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);padding:5px 14px;}
+.compare-wrap tr.winner td.m1-col{background:var(--green);color:white;}
+
+/* CHART */
+.chart-wrap{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:18px;}
+.chart-wrap h3{font-size:0.82rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:14px;}
+
+/* AMORT SECTION */
+.amort-section{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:18px;}
+.amort-hdr{padding:10px 16px;background:var(--text);color:white;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+.amort-body{padding:0;overflow:hidden;max-height:0;transition:max-height 0.3s ease;}
+.amort-body.open{max-height:600px;overflow-y:auto;}
+.amort-body table{width:100%;border-collapse:collapse;font-size:0.75rem;}
+.amort-body th{padding:6px 10px;background:#eef1f5;font-weight:700;text-align:right;border-bottom:2px solid var(--border);}
+.amort-body th:first-child{text-align:left;}
+.amort-body td{padding:5px 10px;border-bottom:1px solid var(--border);text-align:right;}
+.amort-body td:first-child{text-align:left;font-weight:600;}
+.amort-body tr.m1-row td{background:var(--green-light);color:var(--green-dark);}
+
+/* FOOTER */
+.footer{background:var(--text);color:rgba(255,255,255,0.5);text-align:center;padding:16px;font-size:0.72rem;line-height:1.9;}
+.footer a{color:var(--green);text-decoration:none;}
+
+/* DISCLAIMER */
+.disc{background:#fffde7;border:1px solid #ffe57f;border-radius:8px;padding:10px 14px;font-size:0.72rem;color:#7a6000;margin-bottom:16px;}
+
+/* misc */
+.tag{display:inline-block;background:var(--green);color:white;border-radius:50px;padding:2px 8px;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-left:4px;}
+.tag.red{background:var(--red);}
+.tag.blue{background:var(--blue);}
+
+/* SWEEP SECTION */
+.sweep-section{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:18px;}
+.sweep-hdr{background:linear-gradient(135deg,#1a2a5e,var(--blue));color:white;padding:11px 18px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.sweep-hdr-left{display:flex;align-items:center;gap:10px;}
+.sweep-hdr-title{font-size:0.82rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;}
+.sweep-hdr-sub{font-size:0.72rem;opacity:0.75;}
+.sweep-body{padding:18px;display:none;}
+.sweep-body.open{display:block;}
+.sweep-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:18px;border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--border);}
+@media(max-width:700px){.sweep-steps{grid-template-columns:1fr 1fr;}}
+.sweep-step{padding:14px 16px;border-right:1.5px solid var(--border);position:relative;}
+.sweep-step:last-child{border-right:none;}
+.sweep-step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:800;margin-bottom:8px;}
+.sweep-step-icon{font-size:1.4rem;margin-bottom:6px;}
+.sweep-step-title{font-size:0.78rem;font-weight:800;margin-bottom:4px;}
+.sweep-step-desc{font-size:0.72rem;color:var(--text-light);line-height:1.55;}
+.step-setup{background:#eef2ff;}.step-setup .sweep-step-num{background:var(--blue);color:white;}
+.step-monthly{background:#fff8e1;}.step-monthly .sweep-step-num{background:#e67e22;color:white;}
+.step-trigger{background:#fce4ec;}.step-trigger .sweep-step-num{background:var(--red);color:white;}
+.step-execute{background:var(--green-light);}.step-execute .sweep-step-num{background:var(--green-dark);color:white;}
+.sweep-arrow{position:absolute;right:-12px;top:50%;transform:translateY(-50%);background:var(--white);border:1.5px solid var(--border);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;z-index:2;color:var(--text-light);}
+@media(max-width:700px){.sweep-arrow{display:none;}}
+
+.sweep-numbers{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:600px){.sweep-numbers{grid-template-columns:1fr;}}
+.sweep-calc{background:#f8f9fa;border-radius:8px;padding:14px;border:1.5px solid var(--border);}
+.sweep-calc h4{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.sweep-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);}
+.sweep-row:last-child{border-bottom:none;font-weight:700;}
+.sweep-row .sk{font-size:0.72rem;color:var(--text-light);}
+.sweep-row .sv{font-size:0.82rem;font-weight:600;color:var(--text);}
+.sweep-row .sv.green{color:var(--green-dark);}
+.sweep-row .sv.orange{color:#c0392b;}
+.sweep-insight{background:linear-gradient(135deg,var(--green-dark),var(--green));color:white;border-radius:8px;padding:14px 16px;font-size:0.78rem;line-height:1.7;}
+.sweep-insight strong{font-weight:800;}
+.sweep-cycle{background:#f0f4ff;border-radius:8px;padding:14px 16px;border:1.5px solid #c5d0f0;margin-bottom:14px;}
+.sweep-cycle h4{font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:8px;}
+.cycle-bar{display:flex;height:28px;border-radius:6px;overflow:hidden;margin-bottom:6px;border:1px solid var(--border);}
+.cycle-seg{display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;color:white;padding:0 6px;white-space:nowrap;overflow:hidden;}
+.cycle-legend{display:flex;gap:14px;flex-wrap:wrap;}
+.cycle-legend-item{display:flex;align-items:center;gap:5px;font-size:0.68rem;color:var(--text-light);}
+.cycle-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-logo">FMFS <span>· Festa Mortgages &amp; Financial Services</span></div>
+  <div class="hdr-right">
+    Patrick Festa · Mortgage Agent | Life &amp; Mutual Funds<br>
+    <a href="mailto:patrick@fmfs.ca">patrick@fmfs.ca</a> · <a href="https://www.MeetWithFesta.ca">MeetWithFesta.ca</a>
+  </div>
+</div>
+
+<!-- TITLE BAR -->
+<div class="title-bar">
+  <div>
+    <h1>Refi + Manulife One Calculator</h1>
+    <p>Compare refinance scenarios vs. Manulife One — find your best path to debt freedom.</p>
+  </div>
+  <div style="font-size:0.75rem;opacity:0.8;">For illustration purposes only · Not a guarantee of approval or rate</div>
+</div>
+
+<div class="main">
+
+<!-- DISCLAIMER -->
+<div class="disc">⚠️ <strong>Illustration only.</strong> Manulife One uses daily interest compounding. All scenarios use simplified monthly compounding. Results should be confirmed with a personalized Manulife Bank report. Contact Patrick for a free analysis.</div>
+
+<!-- ══ INPUT SECTION ══ -->
+<div class="input-grid">
+
+  <!-- Current Mortgage -->
+  <div class="icard">
+    <div class="icard-hdr red" style="background:var(--red);">Current Mortgage</div>
+    <div class="icard-body">
+      <div class="ig"><label>Current Property Value</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="propVal" value="2000000" step="10000"></div></div>
+      <div class="ig"><label>Current Mortgage Balance</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="currBal" value="1000000" step="10000"></div></div>
+      <div class="ig"><label>Current Rate</label>
+        <div class="ir"><input type="number" id="currRate" value="3.79" step="0.01"><span class="s">%</span></div></div>
+      <div class="ig"><label>Remaining Amortization</label>
+        <div class="ir"><input type="number" id="currAmort" value="20" step="1"><span class="s">yrs</span></div></div>
+      <div class="ig"><label>Equity to Retain</label>
+        <div class="ir"><input type="number" id="equityPct" value="55" step="1"><span class="s">%</span></div></div>
+      <div class="ig"><label>Annual Property Taxes</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="propTax" value="5232" step="100"></div></div>
+    </div>
+  </div>
+
+  <!-- Cash Flow -->
+  <div class="icard">
+    <div class="icard-hdr green">Cash Flow &amp; Savings</div>
+    <div class="icard-body">
+      <div class="ig"><label>Net Monthly Income (after tax)</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="income" value="6500" step="100"></div></div>
+      <div class="ig"><label>Monthly Living Expenses (excl. mortgage)</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="living" value="2100" step="100"></div></div>
+      <div class="ig"><label>Current Chequing Balance</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="cheq" value="5000" step="500"></div></div>
+      <div class="ig"><label>Current Savings Balance</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="savings" value="0" step="500"></div></div>
+      <div class="ig"><label>Condo Fees / Month</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="condo" value="0" step="50"></div></div>
+      <div class="ig"><label>Utilities / Month</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="utils" value="100" step="10"></div></div>
+    </div>
+  </div>
+
+  <!-- Closing Costs -->
+  <div class="icard">
+    <div class="icard-hdr blue">Closing Cost Assumptions</div>
+    <div class="icard-body">
+      <div class="ig"><label>Legal Fees</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="legal" value="1800" step="100"></div></div>
+      <div class="ig"><label>Appraisal Fee</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="appraisal" value="800" step="100"></div></div>
+      <div class="ig"><label>Title Insurance / Tax</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="titleFee" value="234" step="50"></div></div>
+      <div class="ig"><label>Break Penalty (months of interest)</label>
+        <div class="ir"><input type="number" id="penaltyMonths" value="3" step="1"><span class="s">mo</span></div></div>
+      <div class="ig"><label>Other Debts to Pay Off</label>
+        <div class="ir"><span class="p">$</span><input type="number" id="otherDebts" value="0" step="1000"></div></div>
+      <div class="ig"><label>Manulife One Rate (M1)</label>
+        <div class="ir"><input type="number" id="m1Rate" value="4.95" step="0.05"><span class="s">%</span></div></div>
+    </div>
+  </div>
+
+</div><!-- /input-grid -->
+
+<!-- ══ SCENARIO INPUTS ══ -->
+<div style="margin-bottom:6px;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);">
+  Refinance Scenarios — edit rates, amounts, and amortization below
+</div>
+<div class="scenario-grid" id="scen-inputs">
+
+  <!-- Scenario 1 -->
+  <div class="icard">
+    <div class="icard-hdr" style="background:#2c3e6b;color:white;">
+      <input class="sc-name-input" style="color:white;" id="s1name" value="3yr Fixed Mortgage" type="text">
+    </div>
+    <div class="icard-body">
+      <div class="ig"><label>Type</label>
+        <div class="ir">
+          <select id="s1type" style="flex:1;border:none;background:transparent;padding:7px 3px;font-size:0.88rem;outline:none;">
+            <option value="fixed">Fixed Mortgage</option>
+            <option value="heloc">Open HELOC / LOC</option>
+            <option value="hybrid">Hybrid (Fixed + LOC)</option>
+          </select>
+        </div></div>
+      <div class="ig"><label>Annual Mortgage Rate</label>
+        <div class="ir"><input type="number" id="s1rate" value="3.84" step="0.01"><span class="s">%</span></div></div>
+      <div class="ig"><label>LOC Rate (if applicable)</label>
+        <div class="ir"><input type="number" id="s1loc" value="4.95" step="0.01"><span class="s">%</span></div></div>
+      <div class="ig"><label>Amortization</label>
+        <div class="ir"><input type="number" id="s1amort" value="30" step="1"><span class="s">yrs</span></div></div>
+    </div>
+  </div>
+
+  <!-- Scenario 2 -->
+  <div class="icard">
+    <div class="icard-hdr" style="background:#5a3e8c;color:white;">
+      <input class="sc-name-input" style="color:white;" id="s2name" value="3yr Open HELOC" type="text">
+    </div>
+    <div class="icard-body">
+      <div class="ig"><label>Type</label>
+        <div class="ir">
+          <select id="s2type" style="flex:1;border:none;background:transparent;padding:7px 3px;font-size:0.88rem;outline:none;">
+            <option value="fixed">Fixed Mortgage</option>
+            <option value="heloc" selected>Open HELOC / LOC</option>
+            <option value="hybrid">Hybrid (Fixed + LOC)</option>
+          </select>
+        </div></div>
+      <div class="ig"><label>Annual Mortgage Rate</label>
+        <div class="ir"><input type="number" id="s2rate" value="4.19" step="0.01"><span class="s">%</span></div></div>
+      <div class="ig"><label>LOC Rate (if applicable)</label>
+        <div class="ir"><input type="number" id="s2loc" value="4.95" step="0.01"><span class="s">%</span></div></div>
+      <div class="ig"><label>Amortization</label>
+        <div class="ir"><input type="number" id="s2amort" value="30" step="1"><span class="s">yrs</span></div></div>
+    </div>
+  </div>
+
+  <!-- Scenario 3 -->
+  <div class="icard">
+    <div class="icard-hdr" style="background:#3e6b5a;color:white;">
+      <input class="sc-name-input" style="color:white;" id="s3name" value="3yr Fixed + LOC" type="text">
+    </div>
+    <div class="icard-body">
+      <div class="ig"><label>Type</label>
+        <div class="ir">
+          <select id="s3type" style="flex:1;border:none;background:transparent;padding:7px 3px;font-size:0.88rem;outline:none;">
+            <option value="fixed">Fixed Mortgage</option>
+            <option value="heloc">Open HELOC / LOC</option>
+            <option value="hybrid" selected>Hybrid (Fixed + LOC)</option>
+          </select>
+        </div></div>
+      <div class="ig"><label>Annual Mortgage Rate</label>
+        <div class="ir"><input type="number" id="s3rate" value="4.29" step="0.01"><span class="s">%</span></div></div>
+      <div class="ig"><label>LOC Rate (if applicable)</label>
+        <div class="ir"><input type="number" id="s3loc" value="4.95" step="0.01"><span class="s">%</span></div></div>
+      <div class="ig"><label>Amortization (fixed portion)</label>
+        <div class="ir"><input type="number" id="s3amort" value="20" step="1"><span class="s">yrs</span></div></div>
+    </div>
+  </div>
+
+  <!-- M1 Card (read-only, uses M1 rate from closing costs above) -->
+  <div class="icard">
+    <div class="icard-hdr" style="background:var(--green-dark);color:white;">Manulife One</div>
+    <div class="icard-body">
+      <div style="font-size:0.78rem;color:var(--text-light);line-height:1.6;">
+        M1 replaces your existing mortgage and chequing account.<br><br>
+        Opening balance = mortgage balance + <strong id="m1-penalty-preview">—</strong> penalty.<br><br>
+        Your <strong id="m1-surplus-preview">—</strong>/mo surplus is applied to the balance every month at <strong><span id="m1rate-preview">4.95</span>%</strong> variable rate.
+      </div>
+    </div>
+  </div>
+
+</div><!-- /scenario inputs -->
+
+<!-- ══ M1 NUMBER BANNER ══ -->
+<div class="m1-banner" id="m1-banner">
+  <div class="m1-num-block">
+    <div class="lbl">Your M1 Number</div>
+    <div class="val" id="m1-number">$0</div>
+    <div class="sub" id="m1-number-sub">Interest savings vs. current mortgage</div>
+  </div>
+  <div class="m1-stats-grid">
+    <div class="m1-stat">
+      <div class="sl">Current — Debt Free</div>
+      <div class="sv" id="b-curr-df">—</div>
+      <div class="ss" id="b-curr-int">—</div>
+    </div>
+    <div class="m1-stat">
+      <div class="sl">M1 — Debt Free</div>
+      <div class="sv" id="b-m1-df">—</div>
+      <div class="ss" id="b-m1-int">—</div>
+    </div>
+    <div class="m1-stat">
+      <div class="sl">Years Saved</div>
+      <div class="sv" id="b-yrs-saved">—</div>
+      <div class="ss" id="b-pmt-saved">—</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SWEEP EXPLAINER ══ -->
+<div class="sweep-section">
+  <div class="sweep-hdr" onclick="toggleSweep()">
+    <div class="sweep-hdr-left">
+      <div>
+        <div class="sweep-hdr-title">⚙️ How the Sweep Works — Re-Advanceable Offset Strategy</div>
+        <div class="sweep-hdr-sub">The mechanism that maximizes your HELOC/Hybrid scenarios</div>
+      </div>
+    </div>
+    <span id="sweep-toggle" style="font-size:0.78rem;opacity:0.8;">▼ Show</span>
+  </div>
+  <div class="sweep-body" id="sweep-body">
+
+    <!-- 4-Step Flow -->
+    <div class="sweep-steps">
+      <!-- Step 1 -->
+      <div class="sweep-step step-setup">
+        <div class="sweep-step-num">1</div>
+        <div class="sweep-step-icon">🏦</div>
+        <div class="sweep-step-title">Initial Setup</div>
+        <div class="sweep-step-desc">
+          Your total refinance amount is split: a <strong>Fixed Term</strong> (the larger portion) + an <strong>Open LOC</strong> (the initial draw).<br><br>
+          The initial LOC draw is calculated to keep payments sustainable — see <em>Your Numbers</em> below.
+        </div>
+        <div class="sweep-arrow">→</div>
+      </div>
+      <!-- Step 2 -->
+      <div class="sweep-step step-monthly">
+        <div class="sweep-step-num">2</div>
+        <div class="sweep-step-icon">📅</div>
+        <div class="sweep-step-title">Monthly Cycle</div>
+        <div class="sweep-step-desc">
+          Each month: pay your fixed term mortgage payment, then deposit remaining surplus into the LOC.<br><br>
+          Every dollar sitting in the LOC <strong>offsets interest daily</strong> — your money works at your mortgage rate instead of earning 0.1% at a bank.
+        </div>
+        <div class="sweep-arrow">→</div>
+      </div>
+      <!-- Step 3 -->
+      <div class="sweep-step step-trigger">
+        <div class="sweep-step-num">3</div>
+        <div class="sweep-step-icon">🎯</div>
+        <div class="sweep-step-title">The Trigger</div>
+        <div class="sweep-step-desc">
+          Every ~6 months, your LOC balance approaches the <strong>sweep threshold</strong>.<br><br>
+          ⚠️ <strong>Never let the LOC go positive</strong> — a positive balance earns nothing. The moment it approaches zero, execute the sweep.
+        </div>
+        <div class="sweep-arrow">→</div>
+      </div>
+      <!-- Step 4 -->
+      <div class="sweep-step step-execute">
+        <div class="sweep-step-num">4</div>
+        <div class="sweep-step-icon">🔄</div>
+        <div class="sweep-step-title">Execute the Sweep</div>
+        <div class="sweep-step-desc">
+          Transfer your accumulated surplus from the LOC <strong>directly onto the Fixed Term</strong> as a lump-sum prepayment.<br><br>
+          This reduces the term balance → lowers your payment → increases your monthly surplus → accelerates the next cycle.
+        </div>
+      </div>
+    </div>
+
+    <!-- Cycle Visualization -->
+    <div class="sweep-cycle">
+      <h4>Monthly Cash Flow — Where Every Dollar Goes</h4>
+      <div class="cycle-bar" id="cycle-bar">
+        <div class="cycle-seg" style="background:#2c3e6b;width:40%;">Income</div>
+        <div class="cycle-seg" style="background:#c0392b;width:20%;">Mortgage Pmt</div>
+        <div class="cycle-seg" style="background:#e67e22;width:15%;">Living Exp</div>
+        <div class="cycle-seg" style="background:var(--green);width:25%;">→ LOC Surplus</div>
+      </div>
+      <div class="cycle-legend">
+        <div class="cycle-legend-item"><div class="cycle-dot" style="background:#2c3e6b;"></div>Net monthly income</div>
+        <div class="cycle-legend-item"><div class="cycle-dot" style="background:#c0392b;"></div>Fixed term payment</div>
+        <div class="cycle-legend-item"><div class="cycle-dot" style="background:#e67e22;"></div>Living expenses</div>
+        <div class="cycle-legend-item"><div class="cycle-dot" style="background:var(--green);"></div>LOC surplus (offsets interest daily)</div>
+      </div>
+    </div>
+
+    <!-- Your Numbers + Insight -->
+    <div class="sweep-numbers">
+      <div class="sweep-calc">
+        <h4>Your Numbers — Hybrid / HELOC Scenario</h4>
+        <div class="sweep-row"><span class="sk">Total Refinance Amount</span><span class="sv" id="sw-total">—</span></div>
+        <div class="sweep-row"><span class="sk">Suggested Initial LOC Draw</span><span class="sv green" id="sw-loc">—</span></div>
+        <div class="sweep-row"><span class="sk">Fixed Term Portion</span><span class="sv" id="sw-term">—</span></div>
+        <div class="sweep-row"><span class="sk">Fixed Term Monthly Payment</span><span class="sv" id="sw-pmt">—</span></div>
+        <div class="sweep-row"><span class="sk">LOC Monthly Interest Cost</span><span class="sv orange" id="sw-loc-int">—</span></div>
+        <div class="sweep-row"><span class="sk">Free Monthly Cash Flow</span><span class="sv green" id="sw-free">—</span></div>
+        <div class="sweep-row"><span class="sk">Sweep Every (months)</span><span class="sv">
+          <input type="number" id="sweepMonths" value="6" min="1" max="24" style="width:50px;border:1.5px solid var(--border);border-radius:4px;padding:3px 6px;font-size:0.82rem;">
+        </span></div>
+        <div class="sweep-row"><span class="sk">Suggested Sweep Amount</span><span class="sv green" id="sw-sweep">—</span></div>
+      </div>
+
+      <div>
+        <div class="sweep-insight" style="margin-bottom:12px;">
+          <strong>Why this beats standard M1:</strong><br>
+          The HELOC/Hybrid strategy applies your surplus as <em>lump-sum prepayments</em> to the fixed term — which typically carries a lower rate than M1 (4.95%). By doing the sweep, you're paying down cheaper-rate debt faster while keeping the offset working on the LOC side.<br><br>
+          <strong>The rule:</strong> When your LOC balance approaches <span id="sw-threshold">$0</span>, trigger the sweep. Waiting too long means the account goes positive — and that positive balance earns nothing.
+        </div>
+        <div class="sweep-calc">
+          <h4>M1 vs. HELOC — Key Difference</h4>
+          <div class="sweep-row"><span class="sk">M1</span><span class="sv" style="font-size:0.72rem;text-align:right;max-width:60%;">Automatic daily offset. No manual sweeps needed. All-in-one account. Rate: <span id="sw-m1rate">4.95%</span></span></div>
+          <div class="sweep-row"><span class="sk">HELOC / Hybrid</span><span class="sv" style="font-size:0.72rem;text-align:right;max-width:60%;">Manual sweep required every ~6 months. More effort, but lower rate on fixed portion saves more total interest.</span></div>
+          <div class="sweep-row"><span class="sk">Interest advantage (HELOC vs M1)</span><span class="sv green" id="sw-heloc-vs-m1">—</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /sweep-body -->
+</div>
+
+<!-- ══ SCENARIO RESULTS ══ -->
+<div class="scenario-grid" id="scen-results">
+
+  <!-- Current Way -->
+  <div class="scard current">
+    <div class="scard-hdr current">Current Mortgage <span class="tag red">Now</span></div>
+    <div class="scard-body" id="res-current"></div>
+  </div>
+
+  <!-- Scenario 1 -->
+  <div class="scard" id="scard1">
+    <div class="scard-hdr" id="shdr1">Loading…</div>
+    <div class="scard-body" id="res-s1"></div>
+  </div>
+
+  <!-- Scenario 2 -->
+  <div class="scard" id="scard2">
+    <div class="scard-hdr" id="shdr2">Loading…</div>
+    <div class="scard-body" id="res-s2"></div>
+  </div>
+
+  <!-- Scenario 3 -->
+  <div class="scard" id="scard3">
+    <div class="scard-hdr" id="shdr3">Loading…</div>
+    <div class="scard-body" id="res-s3"></div>
+  </div>
+
+  <!-- M1 -->
+  <div class="scard m1" style="grid-column:span 1;">
+    <div class="scard-hdr m1">Manulife One <span class="tag">M1</span></div>
+    <div class="scard-body" id="res-m1"></div>
+  </div>
+
+</div>
+
+<!-- ══ FULL COMPARISON TABLE ══ -->
+<div class="compare-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th style="background:#f0f2f5;width:180px;">Metric</th>
+        <th class="current-col" id="th-current">Current Mortgage</th>
+        <th class="s1" id="th-s1">Scenario 1</th>
+        <th class="s2" id="th-s2">Scenario 2</th>
+        <th class="s3" id="th-s3">Scenario 3</th>
+        <th class="m1-col">Manulife One</th>
+      </tr>
+    </thead>
+    <tbody id="compare-tbody"></tbody>
+  </table>
+</div>
+
+<!-- ══ PAYDOWN CHART ══ -->
+<div class="chart-wrap">
+  <h3>Outstanding Balance — Year by Year</h3>
+  <canvas id="paydownChart" height="120"></canvas>
+</div>
+
+<!-- ══ AMORTIZATION TABLE ══ -->
+<div class="amort-section">
+  <div class="amort-hdr" onclick="toggleAmort()">
+    Year-by-Year Cash Flow Comparison
+    <span id="amort-toggle">▼ Show</span>
+  </div>
+  <div class="amort-body" id="amort-body">
+    <table>
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Current — Principal</th>
+          <th>Current — Interest</th>
+          <th>Current — Balance</th>
+          <th style="background:var(--green-light);color:var(--green-dark);">M1 — Principal</th>
+          <th style="background:var(--green-light);color:var(--green-dark);">M1 — Interest</th>
+          <th style="background:var(--green-light);color:var(--green-dark);">M1 — Balance</th>
+        </tr>
+      </thead>
+      <tbody id="amort-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Manulife One is offered through Manulife Bank of Canada. Rates are variable and subject to change without notice.<br>
+  This tool is for educational and illustration purposes only and does not constitute a mortgage offer or guarantee of results.<br>
+  Prepared by <a href="https://www.MeetWithFesta.ca">Festa Mortgages &amp; Financial Services (FMFS)</a> · patrick@fmfs.ca · 8Twelve Mortgage · Primerica Canada
+</div>
+
+</div><!-- /main -->
+
+<script>
+const $ = id => document.getElementById(id);
+let chart = null;
+
+// ── Helpers ──────────────────────────────────────────────────
+function fmt(n)   { return '$' + Math.round(Math.abs(n)).toLocaleString('en-CA'); }
+function fmtD(n)  { return '$' + Math.abs(n).toLocaleString('en-CA', {minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtP(n)  { return n.toFixed(2) + '%'; }
+function fmtY(m)  {
+  if (m <= 0) return '—';
+  const y = Math.floor(m/12), mo = Math.round(m%12);
+  if (mo === 0) return y + ' yrs';
+  if (y === 0) return mo + ' mo';
+  return y + ' yrs, ' + mo + ' mo';
+}
+function dfDate(months) {
+  const d = new Date();
+  d.setMonth(d.getMonth() + Math.round(months));
+  return d.toLocaleDateString('en-CA',{month:'short',year:'numeric'});
+}
+
+// Canadian semi-annual compounding → effective monthly rate
+function canMonthly(annualPct) {
+  const semi = annualPct / 100 / 2;
+  return Math.pow(1 + semi, 1/6) - 1;
+}
+
+// Monthly payment using Canadian semi-annual compounding (standard for fixed mortgages)
+function calcPmt(principal, annualPct, months) {
+  if (!principal || !annualPct || !months) return 0;
+  const r = canMonthly(annualPct);
+  if (r === 0) return principal / months;
+  return principal * r * Math.pow(1+r, months) / (Math.pow(1+r, months) - 1);
+}
+
+// ── Simulations ───────────────────────────────────────────────
+
+// Fixed mortgage standard amortization
+function simFixed(balance, annualPct, amortMonths) {
+  const r   = canMonthly(annualPct);
+  const pmt = calcPmt(balance, annualPct, amortMonths);
+  let bal = balance, totalInt = 0, months = 0;
+  const yearlyBal = [], yearData = [];
+  while (bal > 1 && months < 480) {
+    const int  = bal * r;
+    const prin = Math.min(pmt - int, bal);
+    totalInt += int;
+    bal       = Math.max(0, bal - prin);
+    months++;
+    if (months % 12 === 0) {
+      yearlyBal.push(bal);
+      yearData.push({ yr: months/12, prin: 0, int: 0, bal });
+    }
+  }
+  const netEff = balance > 0 && months > 0 ? (totalInt / balance / (months/12)) * 100 : 0;
+  return { pmt, totalInt, months, yearlyBal, yearData, netEff, monthlyPmt: pmt };
+}
+
+// HELOC / Open LOC — income surplus applied monthly (offset mechanism)
+function simHELOC(balance, annualPct, monthlySurplus) {
+  const r = annualPct / 100 / 12; // LOC uses monthly compounding
+  let bal = balance, totalInt = 0, months = 0;
+  const yearlyBal = [], yearData = [];
+  const MAX = 480;
+  const netPmt = Math.max(0, monthlySurplus);
+  if (netPmt <= 0) return { pmt: bal*r, totalInt: bal*r*MAX, months:MAX, yearlyBal:[bal], yearData:[], netEff:annualPct, monthlyPmt:bal*r };
+  while (bal > 1 && months < MAX) {
+    const int = bal * r;
+    totalInt += int;
+    const pmt = Math.min(netPmt, bal + int);
+    bal = Math.max(0, bal + int - pmt);
+    months++;
+    if (months % 12 === 0) {
+      yearlyBal.push(bal);
+      yearData.push({ yr: months/12, prin: 0, int: 0, bal });
+    }
+  }
+  const netEff = balance > 0 && months > 0 ? (totalInt / balance / (months/12)) * 100 : 0;
+  return { pmt: netPmt, totalInt, months, yearlyBal, yearData, netEff, monthlyPmt: netPmt };
+}
+
+// Hybrid: fixed term portion (standard amort) + LOC portion (surplus applied to LOC)
+function simHybrid(termBal, termRate, termAmort, locBal, locRate, surplus) {
+  const fixed = simFixed(termBal, termRate, termAmort * 12);
+  // For LOC portion: any remaining surplus after term payment goes to LOC
+  const surplusForLoc = Math.max(0, surplus - fixed.pmt);
+  const loc = simHELOC(locBal, locRate, surplusForLoc > 0 ? surplusForLoc : locBal * locRate / 100 / 12 * 1.01);
+  // Combine: LOC total interest + fixed total interest, payoff = max of both
+  const months = Math.max(fixed.months, loc.months);
+  const maxLen  = Math.max(fixed.yearlyBal.length, loc.yearlyBal.length);
+  const yearlyBal = Array.from({length:maxLen},(_,i)=>(fixed.yearlyBal[i]||0)+(loc.yearlyBal[i]||0));
+  return {
+    termPmt: fixed.pmt,
+    locPmt: locBal * locRate / 100 / 12,
+    pmt: fixed.pmt + (locBal * locRate / 100 / 12),
+    totalInt: fixed.totalInt + loc.totalInt,
+    months,
+    yearlyBal,
+    yearData: [],
+    netEff: termBal + locBal > 0 ? ((fixed.totalInt + loc.totalInt) / (termBal + locBal) / (months/12)) * 100 : 0,
+    monthlyPmt: fixed.pmt + locBal * locRate / 100 / 12,
+  };
+}
+
+// M1: surplus − $16.95 applied monthly, balance = mortgage + penalty − savings
+function simM1(mortgage, m1RatePct, income, living, cheq, sav, compRatePct, penaltyMonths, newMortgageBalance) {
+  const M1_FEE = 16.95;
+  const r      = m1RatePct / 100 / 12;
+  const compR  = canMonthly(compRatePct);
+  // Penalty based on current mortgage balance
+  const penalty = penaltyMonths * mortgage * compR;
+  // Opening balance = (new mortgage amount or current) + penalty - liquid savings
+  const openingBal = (newMortgageBalance || mortgage) + penalty - (cheq + sav);
+  let bal = Math.max(0, openingBal);
+  const netMonthly = (income - living) - M1_FEE;
+  let totalInt = 0, months = 0;
+  const yearlyBal = [], yearData = [];
+  const MAX = 480;
+  if (netMonthly <= 0) return { totalInt:0, months:MAX, yearlyBal:[bal], yearData:[], netEff:m1RatePct, netMonthly, openingBal, penalty };
+  while (bal > 1 && months < MAX) {
+    const int = bal * r;
+    totalInt += int;
+    const pmt = Math.min(netMonthly, bal + int);
+    bal = Math.max(0, bal + int - pmt);
+    months++;
+    if (months % 12 === 0) {
+      yearlyBal.push(bal);
+      yearData.push({ yr: months/12, bal });
+    }
+  }
+  const netEff = openingBal > 0 && months > 0 ? (totalInt / Math.max(openingBal, mortgage) / (months/12)) * 100 : 0;
+  return { totalInt, months, yearlyBal, yearData, netEff, netMonthly, openingBal, penalty, pmt: netMonthly };
+}
+
+// ── Build a result card ────────────────────────────────────────
+function rowHtml(label, value, cls='') {
+  return `<div class="row${cls}"><span class="rk">${label}</span><span class="rv${cls ? ' '+cls.replace('row-','') : ''}">${value}</span></div>`;
+}
+
+function buildCard(result, type, name, color, totalBalance, surplus) {
+  let html = '';
+
+  // Rates
+  html += `<div class="row-section"><span>Rates &amp; Structure</span></div>`;
+  if (type === 'heloc') {
+    html += rowHtml('LOC Rate', fmtP(result._locRate||0));
+    html += rowHtml('Structure', 'Interest-Only LOC');
+  } else if (type === 'hybrid') {
+    html += rowHtml('Mortgage Rate', fmtP(result._termRate||0));
+    html += rowHtml('LOC Rate', fmtP(result._locRate||0));
+    html += rowHtml('Structure', 'Fixed + Open LOC');
+  } else if (type === 'm1') {
+    html += rowHtml('M1 Rate (variable)', fmtP(result._m1Rate||0));
+    html += rowHtml('Opening Balance', fmt(result.openingBal||0));
+    html += rowHtml('Break Penalty', fmt(result.penalty||0));
+  } else {
+    html += rowHtml('Rate', fmtP(result._rate||0));
+    html += rowHtml('Net Effective Rate', fmtP(result.netEff));
+  }
+
+  // Payments
+  html += `<div class="row-section"><span>Monthly Payments</span></div>`;
+  if (type === 'hybrid') {
+    html += rowHtml('Fixed Portion', fmt(result.termPmt||0)+'/mo');
+    html += rowHtml('LOC Portion (int-only)', fmt(result.locPmt||0)+'/mo');
+  }
+  html += rowHtml(type === 'm1' ? 'Net Paydown/mo' : 'Mortgage Payment', fmt(result.monthlyPmt||result.pmt||0)+'/mo', ' row-highlight');
+  html += rowHtml('Property Taxes', fmt(result._taxes||0)+'/mo');
+  if ((result._condo||0) > 0) html += rowHtml('Condo Fees', fmt(result._condo)+'/mo');
+  if ((result._utils||0) > 0) html += rowHtml('Utilities', fmt(result._utils)+'/mo');
+  html += rowHtml('Total Monthly Cost', fmt(result._totalMonthly||0)+'/mo', ' row-highlight');
+
+  // Outcome
+  html += `<div class="row-section"><span>Payoff Outcome</span></div>`;
+  html += rowHtml('Debt-Free In', fmtY(result.months), ' row-highlight');
+  html += rowHtml('Debt-Free Date', dfDate(result.months));
+  html += rowHtml('Total Interest Paid', fmt(result.totalInt), ' row-red');
+  html += rowHtml('Net Effective Rate', fmtP(result.netEff));
+
+  return html;
+}
+
+// ── Main Calculate ─────────────────────────────────────────────
+function calculate() {
+  // Read inputs
+  const propVal       = +$('propVal').value     || 2000000;
+  const currBal       = +$('currBal').value     || 1000000;
+  const currRate      = +$('currRate').value    || 3.79;
+  const currAmort     = +$('currAmort').value   || 20;
+  const equityPct     = +$('equityPct').value   || 55;
+  const propTax       = +$('propTax').value     || 5232;
+  const income        = +$('income').value      || 6500;
+  const living        = +$('living').value      || 2100;
+  const cheq          = +$('cheq').value        || 5000;
+  const savBal        = +$('savings').value     || 0;
+  const condo         = +$('condo').value       || 0;
+  const utils         = +$('utils').value       || 100;
+  const legal         = +$('legal').value       || 1800;
+  const appraisal     = +$('appraisal').value   || 800;
+  const titleFee      = +$('titleFee').value    || 234;
+  const penaltyMonths = +$('penaltyMonths').value || 3;
+  const otherDebts    = +$('otherDebts').value  || 0;
+  const m1Rate        = +$('m1Rate').value      || 4.95;
+
+  const planLimit    = propVal * (1 - equityPct/100);
+  const monthlyTax   = propTax / 12;
+  const surplus      = income - living;
+  const closingCosts = legal + appraisal + titleFee;
+
+  // Scenario settings
+  const s = [1,2,3].map(i => ({
+    name:  $(`s${i}name`).value,
+    type:  $(`s${i}type`).value,
+    rate:  +$(`s${i}rate`).value,
+    loc:   +$(`s${i}loc`).value,
+    amort: +$(`s${i}amort`).value,
+  }));
+
+  // Compute plan limit amounts for each scenario
+  // All scenarios use planLimit as total new mortgage (refinance)
+  const penalty = penaltyMonths * currBal * canMonthly(currRate);
+
+  // For hybrid: 97.6% to fixed, 2.4% to LOC (approximate from screenshot: 527/540 ≈ 97.6%)
+  // Users would normally specify; we'll use 95% to fixed for hybrid
+  const hybridSplit = 0.975; // 97.5% fixed, 2.5% LOC for hybrid default
+
+  // ── Current Way ──
+  const curr = simFixed(currBal, currRate, currAmort * 12);
+  curr._rate = currRate;
+  curr._taxes = monthlyTax;
+  curr._condo = condo;
+  curr._utils = utils;
+  curr._totalMonthly = curr.pmt + monthlyTax + condo + utils;
+
+  // ── Scenarios ──
+  const results = s.map((sc) => {
+    let res;
+    const termBal = sc.type === 'heloc' ? 0 : (sc.type === 'hybrid' ? planLimit * hybridSplit : planLimit);
+    const locBal  = sc.type === 'heloc' ? planLimit : (sc.type === 'hybrid' ? planLimit * (1 - hybridSplit) : 0);
+
+    if (sc.type === 'fixed') {
+      res = simFixed(termBal, sc.rate, sc.amort * 12);
+      res._rate = sc.rate;
+    } else if (sc.type === 'heloc') {
+      res = simHELOC(locBal, sc.loc, surplus);
+      res._locRate = sc.loc;
+    } else {
+      res = simHybrid(termBal, sc.rate, sc.amort, locBal, sc.loc, surplus);
+      res._termRate = sc.rate;
+      res._locRate  = sc.loc;
+    }
+
+    res._taxes = monthlyTax;
+    res._condo = condo;
+    res._utils = utils;
+    res._totalMonthly = (res.monthlyPmt || res.pmt || 0) + monthlyTax + condo + utils;
+
+    // Closing cost equity takeout
+    res._closingCosts = closingCosts + penalty + otherDebts + currBal - planLimit;
+    res._termBal = termBal;
+    res._locBal  = locBal;
+    res._planLimit = planLimit;
+    return res;
+  });
+
+  // ── M1 ──
+  const m1 = simM1(currBal, m1Rate, income, living, cheq, savBal, currRate, penaltyMonths, currBal);
+  m1._m1Rate = m1Rate;
+  m1._taxes  = monthlyTax;
+  m1._condo  = condo;
+  m1._utils  = utils;
+  m1._totalMonthly = m1.netMonthly + monthlyTax + condo + utils;
+
+  // ── M1 Number ──
+  const m1Number = Math.max(0, curr.totalInt - m1.totalInt);
+  const monthsSaved = Math.max(0, curr.months - m1.months);
+
+  // ── Update M1 banner ──
+  $('m1-number').textContent   = fmt(m1Number);
+  $('m1-number-sub').textContent = `Interest savings vs. current mortgage (${fmtP(currRate)})`;
+  $('b-curr-df').textContent   = fmtY(curr.months);
+  $('b-curr-int').textContent  = fmt(curr.totalInt) + ' total interest';
+  $('b-m1-df').textContent     = fmtY(m1.months);
+  $('b-m1-int').textContent    = fmt(m1.totalInt) + ' total interest';
+  $('b-yrs-saved').textContent = fmtY(monthsSaved);
+  const pmtSaved = curr.pmt * monthsSaved;
+  $('b-pmt-saved').textContent = fmt(pmtSaved) + ' in freed payments';
+
+  // ── M1 preview card ──
+  $('m1-penalty-preview').textContent = fmt(m1.penalty);
+  $('m1-surplus-preview').textContent = fmt(m1.netMonthly);
+  $('m1rate-preview').textContent     = m1Rate;
+
+  // ── Current result card ──
+  $('res-current').innerHTML = buildCard(curr, 'fixed', 'Current', 'red', currBal, surplus);
+
+  // ── Scenario result cards ──
+  const sColors = ['#2c3e6b','#5a3e8c','#3e6b5a'];
+  results.forEach((res, i) => {
+    $(`shdr${i+1}`).innerHTML = s[i].name;
+    $(`res-s${i+1}`).innerHTML = buildCard(res, s[i].type, s[i].name, sColors[i], planLimit, surplus);
+  });
+
+  // ── M1 result card ──
+  $('res-m1').innerHTML = buildCard(m1, 'm1', 'Manulife One', 'green', currBal, surplus);
+
+  // ── Comparison Table ──
+  $('th-current').textContent = 'Current Mortgage';
+  $('th-s1').textContent = s[0].name;
+  $('th-s2').textContent = s[1].name;
+  $('th-s3').textContent = s[2].name;
+
+  const allResults = [curr, ...results, m1];
+  const allCols = ['current-col','s1','s2','s3','m1-col'];
+
+  const tbody = $('compare-tbody');
+  const rows = [
+    { section: 'Payments', label: 'Monthly Mortgage', vals: [curr,results[0],results[1],results[2],m1].map(r=>fmt(r.monthlyPmt||r.pmt||0)+'/mo') },
+    { label: 'Prop. Taxes + Other', vals: allResults.map(r => fmt(r._taxes + r._condo + r._utils)+'/mo') },
+    { label: 'Total Monthly Cost', vals: allResults.map(r => fmt(r._totalMonthly)+'/mo'), bold: true },
+    { section: 'Outcome', label: 'Net Effective Rate', vals: allResults.map(r => fmtP(r.netEff)) },
+    { label: 'Total Interest Paid', vals: allResults.map(r => fmt(r.totalInt)), bold: true },
+    { label: 'Debt-Free In', vals: allResults.map(r => fmtY(r.months)), bold: true },
+    { label: 'Debt-Free Date', vals: allResults.map(r => dfDate(r.months)) },
+    { label: 'vs. Current Mortgage', vals: [
+      '—',
+      ...results.map(r => {
+        const saved = curr.totalInt - r.totalInt;
+        return (saved > 0 ? '✅ Save ' : '❌ +') + fmt(Math.abs(saved));
+      }),
+      '✅ Save ' + fmt(m1Number),
+    ], bold: true },
+  ];
+
+  tbody.innerHTML = rows.map(row => {
+    if (row.section) {
+      return `<tr class="section-row"><td colspan="6">${row.section}</td></tr>`;
+    }
+    const cells = row.vals.map((v,i) => `<td class="${allCols[i]}" style="${row.bold?'font-weight:700;':''}">${v}</td>`).join('');
+    return `<tr><td style="font-size:0.78rem;font-weight:600;color:var(--text-light);">${row.label}</td>${cells}</tr>`;
+  }).join('');
+
+  // ── Chart ──
+  const maxYrs = Math.max(...allResults.map(r => r.yearlyBal.length), 5);
+  const labels = Array.from({length:maxYrs},(_,i)=>`Yr ${i+1}`);
+  const datasets = [
+    { label:'Current', data: labels.map((_,i) => curr.yearlyBal[i]||0), borderColor:'#c0392b', backgroundColor:'rgba(192,57,43,0.05)', fill:true, tension:0.3, pointRadius:1, borderWidth:2 },
+    { label:s[0].name, data: labels.map((_,i) => results[0].yearlyBal[i]||0), borderColor:'#2c3e6b', backgroundColor:'rgba(44,62,107,0.05)', fill:false, tension:0.3, pointRadius:1, borderWidth:1.5, borderDash:[4,2] },
+    { label:s[1].name, data: labels.map((_,i) => results[1].yearlyBal[i]||0), borderColor:'#5a3e8c', backgroundColor:'rgba(90,62,140,0.05)', fill:false, tension:0.3, pointRadius:1, borderWidth:1.5, borderDash:[4,2] },
+    { label:s[2].name, data: labels.map((_,i) => results[2].yearlyBal[i]||0), borderColor:'#3e6b5a', backgroundColor:'rgba(62,107,90,0.05)', fill:false, tension:0.3, pointRadius:1, borderWidth:1.5, borderDash:[4,2] },
+    { label:'Manulife One', data: labels.map((_,i) => m1.yearlyBal[i]||0), borderColor:'#009A44', backgroundColor:'rgba(0,154,68,0.08)', fill:true, tension:0.3, pointRadius:2, borderWidth:2.5 },
+  ];
+
+  if (chart) {
+    chart.data.labels = labels;
+    chart.data.datasets = datasets;
+    chart.update('none');
+  } else {
+    chart = new Chart($('paydownChart').getContext('2d'), {
+      type:'line',
+      data:{labels, datasets},
+      options:{
+        responsive:true, animation:false,
+        plugins:{
+          legend:{position:'top',labels:{font:{size:11},boxWidth:14,padding:12}},
+          tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: ${fmt(ctx.raw)}`}}
+        },
+        scales:{
+          y:{beginAtZero:true,ticks:{callback:v=>'$'+(v/1000).toFixed(0)+'k',font:{size:10}},grid:{color:'rgba(0,0,0,0.04)'}},
+          x:{ticks:{font:{size:9}},grid:{display:false}}
+        }
+      }
+    });
+  }
+
+  // ── Amortization Table ──
+  const maxYr = Math.max(curr.yearlyBal.length, m1.yearlyBal.length);
+  const atbody = $('amort-tbody');
+  let atHtml = '';
+  let currBuild = currBal, m1Build = m1.openingBal;
+  const currR = canMonthly(currRate), m1R = m1Rate / 100 / 12;
+  const currPmt = curr.pmt, m1Pmt = m1.netMonthly;
+
+  for (let yr = 1; yr <= maxYr; yr++) {
+    let currInt = 0, currPrin = 0, m1Int = 0, m1Prin = 0;
+    for (let mo = 0; mo < 12; mo++) {
+      if (currBuild > 0.01) {
+        const i = currBuild * currR;
+        const p = Math.min(currPmt - i, currBuild);
+        currInt  += i; currPrin += p; currBuild = Math.max(0, currBuild - p);
+      }
+      if (m1Build > 0.01) {
+        const i = m1Build * m1R;
+        const p = Math.min(m1Pmt - i, m1Build + i);
+        m1Int   += i; m1Prin  += (p - i); m1Build = Math.max(0, m1Build + i - p);
+      }
+    }
+    const isM1Done = m1Build < 0.01;
+    const isCurrDone = currBuild < 0.01;
+    atHtml += `<tr${isM1Done && !isCurrDone ? ' class="m1-row"' : ''}>
+      <td>Year ${yr}</td>
+      <td>${fmtD(currPrin)}</td>
+      <td>${fmtD(currInt)}</td>
+      <td>${isCurrDone ? '✅ $0' : fmtD(currBuild)}</td>
+      <td>${fmtD(m1Prin)}</td>
+      <td>${fmtD(m1Int)}</td>
+      <td>${isM1Done ? '✅ $0' : fmtD(m1Build)}</td>
+    </tr>`;
+    if (isCurrDone && isM1Done) break;
+  }
+  atbody.innerHTML = atHtml;
+
+  // ── Sweep section ──
+  // Use Scenario 2 (HELOC) LOC rate as the representative HELOC rate, else s1loc
+  const helocRate = s[1].type === 'heloc' ? s[1].loc : (s[0].type === 'heloc' ? s[0].loc : s[2].loc);
+  const helocAmort= s[1].type === 'heloc' ? s[1].amort : (s[0].type === 'heloc' ? s[0].amort : s[2].amort);
+  updateSweepSection(planLimit, helocRate, helocAmort, helocRate, income, living, monthlyTax, condo, utils, m1Rate, m1.totalInt);
+}
+
+function toggleSweep() {
+  const body = $('sweep-body');
+  const tog  = $('sweep-toggle');
+  if (body.classList.contains('open')) {
+    body.classList.remove('open');
+    tog.textContent = '▼ Show';
+  } else {
+    body.classList.add('open');
+    tog.textContent = '▲ Hide';
+  }
+}
+
+// Iterative LOC calculation — "Heart of the Beast" (Yitz Reznik method)
+// Finds the optimal initial LOC draw so monthly surplus × sweepMonths = sweep amount
+function calcSweepParams(totalMortgage, mortgageRate, amortYrs, locRate, cashFlowAvailable, sweepMonths) {
+  if (!totalMortgage || !cashFlowAvailable || cashFlowAvailable <= 0) return null;
+  let locGuess = totalMortgage * 0.04; // start conservative: 4% of total
+  let termPortion, pmt, monthlySurplus, locMonthlyCost, locDraw;
+  // 5 iterations converges well (Yitz uses 3, we use 5 for stability)
+  for (let i = 0; i < 5; i++) {
+    termPortion   = totalMortgage - locGuess;
+    pmt           = calcPmt(termPortion, mortgageRate, amortYrs * 12);
+    monthlySurplus= cashFlowAvailable - pmt;
+    if (monthlySurplus <= 0) return null; // cash flow too tight
+    locMonthlyCost= locGuess * locRate / 100 / 12;
+    // Next guess: surplus over sweep period minus LOC carry cost
+    locDraw = Math.max(0, (monthlySurplus - locMonthlyCost) * sweepMonths);
+    locGuess = locDraw;
+  }
+  const freeCashflow = monthlySurplus - locMonthlyCost;
+  const threshold    = -(sweepMonths * monthlySurplus); // LOC balance at sweep time
+  return {
+    initialLocDraw: locGuess,
+    termPortion,
+    monthlyPayment: pmt,
+    monthlySurplus,
+    locMonthlyCost,
+    freeCashflow,
+    sweepAmount: monthlySurplus * sweepMonths,
+    threshold,
+  };
+}
+
+function updateSweepSection(planLimit, mortgageRate, amortYrs, locRate, income, living, monthlyTax, condo, utils, m1Rate, m1TotalInt) {
+  const cashFlow   = income - living - monthlyTax - condo - utils;
+  const sweepMo    = +($('sweepMonths').value) || 6;
+  const sp         = calcSweepParams(planLimit, mortgageRate, amortYrs, locRate, cashFlow, sweepMo);
+
+  // Update cycle bar proportions
+  const total = income;
+  const taxPct  = (monthlyTax / total * 100).toFixed(1);
+  const pmtPct  = sp ? (sp.monthlyPayment / total * 100).toFixed(1) : '20';
+  const expPct  = ((living + condo + utils) / total * 100).toFixed(1);
+  const surpPct = sp ? (sp.monthlySurplus / total * 100).toFixed(1) : '20';
+  const bar = $('cycle-bar');
+  if (bar) {
+    bar.innerHTML = [
+      `<div class="cycle-seg" style="background:#2c3e6b;width:${Math.max(5,100-parseFloat(pmtPct)-parseFloat(expPct)-parseFloat(surpPct))}%;">Income $${Math.round(income/1000)}K</div>`,
+      `<div class="cycle-seg" style="background:#c0392b;width:${pmtPct}%;">Mortgage</div>`,
+      `<div class="cycle-seg" style="background:#e67e22;width:${expPct}%;">Expenses</div>`,
+      `<div class="cycle-seg" style="background:var(--green);width:${surpPct}%;">→ LOC</div>`,
+    ].join('');
+  }
+
+  if (!sp) {
+    ['sw-total','sw-loc','sw-term','sw-pmt','sw-loc-int','sw-free','sw-sweep','sw-threshold','sw-heloc-vs-m1'].forEach(id => {
+      const el = $(id); if (el) el.textContent = 'N/A';
+    });
+    return;
+  }
+
+  $('sw-total').textContent    = fmt(planLimit);
+  $('sw-loc').textContent      = fmt(sp.initialLocDraw);
+  $('sw-term').textContent     = fmt(sp.termPortion);
+  $('sw-pmt').textContent      = fmt(sp.monthlyPayment) + '/mo';
+  $('sw-loc-int').textContent  = fmt(sp.locMonthlyCost) + '/mo';
+  $('sw-free').textContent     = fmt(sp.freeCashflow) + '/mo';
+  $('sw-sweep').textContent    = fmt(sp.sweepAmount) + ' every ' + sweepMo + ' months';
+  $('sw-threshold').textContent= fmt(Math.abs(sp.threshold));
+  $('sw-m1rate').textContent   = m1Rate + '%';
+
+  // HELOC vs M1 interest advantage (use best scenario vs M1)
+  const helocInt = simHELOC(planLimit, locRate, cashFlow).totalInt;
+  const diff = m1TotalInt - helocInt;
+  const el = $('sw-heloc-vs-m1');
+  if (el) {
+    if (diff > 0) {
+      el.textContent = fmt(diff) + ' less interest with HELOC';
+      el.className = 'sv green';
+    } else {
+      el.textContent = fmt(Math.abs(diff)) + ' more interest with HELOC';
+      el.className = 'sv orange';
+    }
+  }
+}
+
+function toggleAmort() {
+  const body = $('amort-body');
+  const tog  = $('amort-toggle');
+  if (body.classList.contains('open')) {
+    body.classList.remove('open');
+    tog.textContent = '▼ Show';
+  } else {
+    body.classList.add('open');
+    tog.textContent = '▲ Hide';
+  }
+}
+
+// Wire inputs
+const inputIds = ['propVal','currBal','currRate','currAmort','equityPct','propTax',
+  'income','living','cheq','savings','condo','utils',
+  'legal','appraisal','titleFee','penaltyMonths','otherDebts','m1Rate',
+  's1name','s1type','s1rate','s1loc','s1amort',
+  's2name','s2type','s2rate','s2loc','s2amort',
+  's3name','s3type','s3rate','s3loc','s3amort','sweepMonths'];
+inputIds.forEach(id => {
+  const el = $(id);
+  if (el) el.addEventListener('input', calculate);
+});
+
+calculate();
+</script>
+</body>
+</html>
