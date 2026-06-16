@@ -3,565 +3,870 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marlye — Your Manulife One &amp; The Power of the Paycheque</title>
+<title>Marlye's Manulife One Plan | FMFS</title>
 <style>
-:root {
-  --green:      #009A44;
-  --green-dark: #005525;
-  --green-light:#E8F5ED;
-  --blue:       #1a2a5e;
-  --blue-mid:   #2c3e6b;
-  --blue-light: #eef2ff;
-  --gold:       #d4a017;
-  --gold-light: #fffde7;
-  --red:        #c0392b;
-  --red-light:  #fdecea;
-  --text:       #1a1a2e;
-  --text-light: #5a6070;
-  --bg:         #f4f6fa;
-  --white:      #ffffff;
-  --border:     #dde3ea;
-  --shadow:     0 2px 18px rgba(0,0,0,0.07);
-  --radius:     12px;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.65;}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f4f0; color: #222; line-height: 1.6; }
 
-/* ── HEADER ── */
-.hdr{background:var(--blue);color:white;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-.hdr-logo{font-size:1rem;font-weight:800;}
-.hdr-logo span{opacity:0.6;font-weight:400;font-size:0.82rem;}
-.hdr-right{font-size:0.75rem;opacity:0.8;text-align:right;line-height:1.7;}
-.hdr-right a{color:#7de8a8;text-decoration:none;font-weight:600;}
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #2d1b5e 0%, #1a0f3c 100%);
+    color: white;
+    padding: 60px 24px 50px;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+    color: #b8a0ff; margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 44px);
+    font-weight: 700; line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .hero h1 span { color: #7fffb2; }
+  .hero-sub {
+    font-size: 18px; color: #d4c8ff; max-width: 640px; margin: 0 auto 36px;
+  }
+  .hero-answer {
+    display: inline-block;
+    background: #7fffb2; color: #1a0f3c;
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 900; padding: 16px 40px;
+    border-radius: 50px; margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+  .hero-answer-sub {
+    color: #b8a0ff; font-size: 15px;
+  }
 
-/* ── HERO ── */
-.hero{background:linear-gradient(135deg,var(--green-dark) 0%,var(--green) 60%,#00c857 100%);color:white;padding:40px 28px 36px;text-align:center;}
-.hero-tag{display:inline-block;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.35);border-radius:50px;padding:5px 16px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:16px;}
-.hero h1{font-size:2rem;font-weight:800;line-height:1.2;margin-bottom:10px;}
-.hero h1 em{font-style:normal;color:#a8f0c8;}
-.hero-sub{font-size:1rem;opacity:0.88;max-width:580px;margin:0 auto 20px;}
-.hero-ref{font-size:0.75rem;opacity:0.65;margin-top:8px;}
+  /* URGENCY BANNER */
+  .urgency {
+    background: #ff6b35; color: white;
+    text-align: center; padding: 14px 24px;
+    font-size: 15px; font-weight: 600;
+    letter-spacing: 0.3px;
+  }
 
-/* ── MAIN ── */
-.main{max-width:860px;margin:0 auto;padding:28px 20px 40px;}
+  /* NUMBERS STRIP */
+  .numbers-strip {
+    background: #1a0f3c;
+    display: flex; flex-wrap: wrap;
+    justify-content: center; gap: 0;
+  }
+  .number-box {
+    flex: 1; min-width: 160px;
+    padding: 28px 20px; text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  .number-box:last-child { border-right: none; }
+  .number-val {
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 800; color: #7fffb2;
+    display: block; margin-bottom: 4px;
+  }
+  .number-label {
+    font-size: 12px; color: #b8a0ff;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
 
-/* ── SECTION HEADER ── */
-.sec-hdr{margin:32px 0 14px;}
-.sec-hdr .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--green);color:white;font-size:0.78rem;font-weight:800;margin-right:8px;flex-shrink:0;vertical-align:middle;}
-.sec-hdr h2{display:inline;font-size:1.12rem;font-weight:800;vertical-align:middle;}
-.sec-hdr p{margin-top:6px;font-size:0.88rem;color:var(--text-light);line-height:1.6;}
+  /* SECTION */
+  .section { padding: 56px 24px; max-width: 860px; margin: 0 auto; }
+  .section-title {
+    font-size: clamp(20px, 3.5vw, 30px);
+    font-weight: 700; color: #2d1b5e;
+    margin-bottom: 10px;
+  }
+  .section-intro {
+    font-size: 16px; color: #555;
+    margin-bottom: 32px; max-width: 680px;
+  }
 
-/* ── CARDS ── */
-.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
-.card-hdr{padding:11px 18px;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;}
-.card-body{padding:18px;}
+  /* QUESTION CARD */
+  .q-card {
+    background: white; border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 28px 32px; margin-bottom: 20px;
+    border-left: 5px solid #2d1b5e;
+  }
+  .q-card .question {
+    font-size: 17px; font-weight: 700; color: #2d1b5e;
+    margin-bottom: 12px;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .q-card .question .q-icon {
+    font-size: 20px; flex-shrink: 0; margin-top: 1px;
+  }
+  .q-card .answer {
+    font-size: 15px; color: #444; line-height: 1.7;
+  }
+  .q-card .answer strong { color: #2d1b5e; }
+  .q-card.highlight { border-left-color: #7fffb2; background: #f0fff7; }
+  .q-card.highlight .question { color: #1a6b3e; }
 
-/* ── 3-ACCOUNT STRUCTURE ── */
-.account-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
-@media(max-width:620px){.account-grid{grid-template-columns:1fr;}}
-.acct{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
-.acct-hdr{padding:12px 16px;color:white;font-size:0.8rem;font-weight:800;}
-.acct-hdr.main-acct{background:var(--green-dark);}
-.acct-hdr.sub1{background:#8b2252;}
-.acct-hdr.sub2{background:var(--blue-mid);}
-.acct-body{background:var(--white);padding:14px 16px;}
-.acct-amt{font-size:1.4rem;font-weight:800;line-height:1.1;margin-bottom:8px;}
-.acct-amt.green{color:var(--green-dark);}
-.acct-amt.purple{color:#8b2252;}
-.acct-amt.blue{color:var(--blue-mid);}
-.acct-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);font-size:0.8rem;}
-.acct-row:last-child{border-bottom:none;}
-.acct-row .ak{color:var(--text-light);}
-.acct-row .av{font-weight:700;}
-.acct-badge{display:inline-block;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:3px 8px;border-radius:50px;margin-top:8px;}
-.badge-open{background:#e8f5ed;color:var(--green-dark);border:1px solid #b8dfc7;}
-.badge-readv{background:var(--blue-light);color:var(--blue);border:1px solid #c5d0f0;}
-.badge-fixed{background:#fce4ec;color:#8b2252;border:1px solid #f5b7cb;}
+  /* THREE BUCKETS */
+  .buckets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px; margin: 24px 0;
+  }
+  .bucket {
+    border-radius: 14px; padding: 24px 20px;
+    text-align: center;
+  }
+  .bucket.main-acct { background: #fff3e0; border: 2px solid #ff9800; }
+  .bucket.sub1 { background: #f3e5f5; border: 2px solid #9c27b0; }
+  .bucket.sub2 { background: #e8f5e9; border: 2px solid #4caf50; }
+  .bucket-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .bucket.main-acct .bucket-label { color: #e65100; }
+  .bucket.sub1 .bucket-label { color: #6a1b9a; }
+  .bucket.sub2 .bucket-label { color: #2e7d32; }
+  .bucket-amount {
+    font-size: 28px; font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .bucket.main-acct .bucket-amount { color: #e65100; }
+  .bucket.sub1 .bucket-amount { color: #6a1b9a; }
+  .bucket.sub2 .bucket-amount { color: #2e7d32; }
+  .bucket-rate {
+    font-size: 18px; font-weight: 700; margin-bottom: 10px;
+  }
+  .bucket-detail {
+    font-size: 12px; color: #555; line-height: 1.5;
+  }
+  .bucket-badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px; margin-top: 8px;
+  }
+  .badge-open { background: #ff9800; color: white; }
+  .badge-readv { background: #4caf50; color: white; }
+  .badge-nonreadv { background: #9c27b0; color: white; }
 
-.total-bar{background:var(--blue);color:white;border-radius:8px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
-.total-bar .tl{font-size:0.78rem;opacity:0.8;}
-.total-bar .tv{font-size:1.25rem;font-weight:800;}
+  /* WASHING MACHINE */
+  .machine {
+    background: linear-gradient(135deg, #2d1b5e, #1a0f3c);
+    border-radius: 20px; padding: 36px;
+    color: white; margin: 28px 0;
+    text-align: center;
+  }
+  .machine h3 {
+    font-size: 22px; font-weight: 800; margin-bottom: 10px;
+    color: #7fffb2;
+  }
+  .machine p { color: #d4c8ff; font-size: 15px; margin-bottom: 28px; }
+  .cycle-steps {
+    display: flex; flex-wrap: wrap;
+    justify-content: center; gap: 0;
+    margin: 0 auto; max-width: 700px;
+  }
+  .cycle-step {
+    flex: 1; min-width: 120px;
+    padding: 16px 10px;
+    position: relative;
+  }
+  .cycle-step:not(:last-child)::after {
+    content: '→';
+    position: absolute; right: -8px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px; color: #7fffb2;
+    font-weight: 700;
+  }
+  .step-icon { font-size: 28px; margin-bottom: 8px; }
+  .step-label { font-size: 12px; color: #b8a0ff; font-weight: 600; }
+  .step-desc { font-size: 13px; color: #e0d8ff; margin-top: 4px; }
 
-/* ── CALLOUT BOXES ── */
-.callout{border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;}
-.callout.green{background:var(--green-light);border-left:4px solid var(--green);}
-.callout.blue{background:var(--blue-light);border-left:4px solid var(--blue-mid);}
-.callout.gold{background:var(--gold-light);border-left:4px solid var(--gold);}
-.callout.red{background:var(--red-light);border-left:4px solid var(--red);}
-.callout h4{font-size:0.82rem;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;}
-.callout h4.green{color:var(--green-dark);}
-.callout h4.blue{color:var(--blue);}
-.callout h4.gold{color:#7a5a00;}
-.callout h4.red{color:var(--red);}
-.callout p{font-size:0.88rem;color:var(--text);line-height:1.65;}
-.callout strong{font-weight:700;}
+  /* COMPARE TABLE */
+  .compare-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin: 24px 0;
+  }
+  .compare-card {
+    border-radius: 14px; padding: 24px 20px; text-align: center;
+  }
+  .compare-card.current { background: #ffeaea; border: 2px solid #e53935; }
+  .compare-card.m1 { background: #e8f5e9; border: 2px solid #43a047; }
+  .compare-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+  .compare-card.current .compare-label { color: #c62828; }
+  .compare-card.m1 .compare-label { color: #2e7d32; }
+  .compare-interest {
+    font-size: 32px; font-weight: 800; margin-bottom: 6px;
+  }
+  .compare-card.current .compare-interest { color: #c62828; }
+  .compare-card.m1 .compare-interest { color: #2e7d32; }
+  .compare-time {
+    font-size: 16px; font-weight: 600; margin-bottom: 8px;
+  }
+  .compare-detail { font-size: 12px; color: #666; }
+  .savings-banner {
+    background: #2d1b5e; color: white;
+    border-radius: 12px; padding: 20px;
+    text-align: center; margin-top: 16px;
+  }
+  .savings-banner .savings-num {
+    font-size: 36px; font-weight: 900; color: #7fffb2;
+  }
+  .savings-banner .savings-label { font-size: 14px; color: #b8a0ff; margin-top: 4px; }
 
-/* ── PAYCHEQUE CYCLE ── */
-.cycle-wrap{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:16px;}
-.cycle-wrap h3{font-size:0.82rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:16px;}
-.cycle-steps{display:flex;align-items:stretch;gap:0;position:relative;}
-@media(max-width:600px){.cycle-steps{flex-direction:column;}}
-.cycle-step{flex:1;padding:14px 12px;text-align:center;position:relative;}
-.cycle-step-icon{font-size:1.6rem;margin-bottom:8px;}
-.cycle-step-title{font-size:0.78rem;font-weight:800;margin-bottom:5px;}
-.cycle-step-desc{font-size:0.72rem;color:var(--text-light);line-height:1.5;}
-.cycle-step.c1{background:#e8f5ed;border-radius:10px 0 0 10px;}
-.cycle-step.c2{background:#eef2ff;}
-.cycle-step.c3{background:#fff8e1;}
-.cycle-step.c4{background:var(--green-light);border-radius:0 10px 10px 0;}
-.cycle-arrow{display:flex;align-items:center;justify-content:center;color:var(--text-light);font-size:1.2rem;padding:0 2px;flex-shrink:0;}
-@media(max-width:600px){.cycle-arrow{transform:rotate(90deg);padding:4px 0;align-self:center;}}
+  /* CASHFLOW VISUAL */
+  .cashflow {
+    background: white; border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 28px 32px; margin: 24px 0;
+  }
+  .cashflow-title {
+    font-size: 16px; font-weight: 700; color: #2d1b5e;
+    margin-bottom: 20px; text-align: center;
+  }
+  .cf-row {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .cf-label { font-size: 14px; color: #555; min-width: 200px; }
+  .cf-bar-wrap { flex: 1; min-width: 100px; background: #f0f0f0; border-radius: 6px; height: 28px; }
+  .cf-bar { height: 28px; border-radius: 6px; display: flex; align-items: center; padding-left: 10px; }
+  .cf-bar span { font-size: 13px; font-weight: 700; color: white; }
+  .cf-val { font-size: 15px; font-weight: 700; min-width: 90px; text-align: right; }
+  .bar-income { background: #2d1b5e; width: 100%; }
+  .bar-sub { background: #9c27b0; width: 38.9%; }
+  .bar-living { background: #ff9800; width: 36.7%; }
+  .bar-surplus { background: #43a047; width: 24.4%; }
+  .cf-surplus-row {
+    background: #e8f5e9; border-radius: 10px; padding: 14px 16px;
+    margin-top: 16px; text-align: center;
+  }
+  .cf-surplus-row .big { font-size: 24px; font-weight: 800; color: #2e7d32; }
+  .cf-surplus-row .small { font-size: 13px; color: #555; }
 
-/* ── MONTHLY FLOW ── */
-.flow-bar-wrap{margin:14px 0 8px;}
-.flow-bar{display:flex;height:36px;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
-.fb-seg{display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:white;padding:0 8px;white-space:nowrap;min-width:0;}
-.flow-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;}
-.fl-item{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:var(--text-light);}
-.fl-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0;}
+  /* YEAR BY YEAR TABLE */
+  .year-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .year-table th {
+    background: #2d1b5e; color: white;
+    padding: 12px 10px; text-align: center;
+    font-size: 12px; letter-spacing: 0.5px;
+  }
+  .year-table td {
+    padding: 10px; text-align: center;
+    border-bottom: 1px solid #eee;
+  }
+  .year-table tr:nth-child(even) td { background: #f9f7ff; }
+  .year-table tr:hover td { background: #ede8ff; }
+  .year-table .highlight-row td {
+    background: #7fffb2 !important; font-weight: 700; color: #1a0f3c;
+  }
+  .progress-bar-wrap { background: #e0e0e0; border-radius: 4px; height: 8px; width: 100%; }
+  .progress-bar-fill { height: 8px; border-radius: 4px; background: linear-gradient(90deg, #7fffb2, #2d1b5e); }
+  .table-wrap { overflow-x: auto; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
 
-/* ── ANNUAL CYCLE DIAGRAM ── */
-.annual-cycle{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:16px;}
-.annual-cycle h3{font-size:0.82rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text-light);margin-bottom:14px;}
-.ac-steps{display:flex;flex-direction:column;gap:0;}
-.ac-step{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);}
-.ac-step:last-child{border-bottom:none;}
-.ac-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:800;flex-shrink:0;margin-top:2px;}
-.ac-content{}
-.ac-title{font-size:0.88rem;font-weight:700;margin-bottom:3px;}
-.ac-desc{font-size:0.80rem;color:var(--text-light);line-height:1.55;}
-.ac-desc strong{color:var(--text);font-weight:700;}
+  /* PENALTY SECTION */
+  .penalty-box {
+    background: white; border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 32px; margin: 24px 0;
+    border-top: 5px solid #ff6b35;
+  }
+  .penalty-title { font-size: 20px; font-weight: 700; color: #2d1b5e; margin-bottom: 20px; }
+  .penalty-math {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 12px; margin: 20px 0;
+  }
+  .math-box {
+    flex: 1; min-width: 130px;
+    background: #f5f4f0; border-radius: 10px; padding: 16px; text-align: center;
+  }
+  .math-box .math-val { font-size: 20px; font-weight: 800; color: #2d1b5e; }
+  .math-box .math-label { font-size: 11px; color: #777; margin-top: 4px; }
+  .math-box.result { background: #e8f5e9; }
+  .math-box.result .math-val { color: #2e7d32; font-size: 24px; }
+  .math-op { font-size: 24px; color: #999; font-weight: 700; }
 
-/* ── COMPARISON TABLE ── */
-.comp-table{width:100%;border-collapse:collapse;font-size:0.85rem;margin-bottom:0;}
-.comp-table th{padding:10px 14px;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.8px;text-align:left;border-bottom:2px solid var(--border);}
-.comp-table th.before{background:var(--red-light);color:var(--red);}
-.comp-table th.after{background:var(--green-light);color:var(--green-dark);}
-.comp-table td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top;}
-.comp-table td.before{background:#fff8f8;color:var(--text-light);}
-.comp-table td.after{background:#f5fbf7;font-weight:600;color:var(--green-dark);}
-.comp-table td.metric{font-size:0.78rem;font-weight:600;color:var(--text-light);background:#f8f9fa;}
-.comp-table tr.total td{font-weight:800;font-size:0.88rem;}
+  /* RETIREMENT */
+  .retirement-box {
+    background: linear-gradient(135deg, #1a6b3e, #0d3d22);
+    border-radius: 20px; padding: 36px;
+    color: white; margin: 28px 0;
+  }
+  .retirement-box h3 { font-size: 22px; font-weight: 800; margin-bottom: 12px; color: #7fffb2; }
+  .retirement-box p { color: #c8f5dc; font-size: 15px; margin-bottom: 20px; }
+  .retirement-points {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;
+  }
+  .ret-point {
+    background: rgba(255,255,255,0.1); border-radius: 12px; padding: 18px;
+  }
+  .ret-point .ret-icon { font-size: 24px; margin-bottom: 8px; }
+  .ret-point .ret-title { font-size: 14px; font-weight: 700; color: #7fffb2; margin-bottom: 6px; }
+  .ret-point .ret-desc { font-size: 13px; color: #c8f5dc; }
 
-/* ── SMALLER SANDBOX ── */
-.sandbox{background:linear-gradient(135deg,#1a2a5e,var(--blue-mid));color:white;border-radius:var(--radius);padding:24px 28px;margin-bottom:16px;}
-.sandbox h3{font-size:1rem;font-weight:800;margin-bottom:10px;}
-.sandbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;}
-@media(max-width:520px){.sandbox-grid{grid-template-columns:1fr;}}
-.sandbox-item{background:rgba(255,255,255,0.12);border-radius:8px;padding:12px 14px;}
-.sandbox-item .si-lbl{font-size:0.68rem;text-transform:uppercase;letter-spacing:1px;opacity:0.75;margin-bottom:4px;}
-.sandbox-item .si-val{font-size:1rem;font-weight:800;}
-.sandbox-item .si-sub{font-size:0.72rem;opacity:0.8;margin-top:3px;}
+  /* CHECKLIST */
+  .checklist {
+    background: white; border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    padding: 32px; margin: 24px 0;
+  }
+  .check-item {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 16px 0; border-bottom: 1px solid #f0f0f0;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-num {
+    background: #2d1b5e; color: white;
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .check-content .check-title { font-weight: 700; font-size: 15px; color: #2d1b5e; margin-bottom: 4px; }
+  .check-content .check-desc { font-size: 14px; color: #555; }
 
-/* ── SAVINGS ── */
-.savings-banner{background:linear-gradient(135deg,var(--green-dark),var(--green));color:white;border-radius:var(--radius);padding:22px 26px;margin-bottom:16px;text-align:center;}
-.savings-banner .sl{font-size:0.72rem;text-transform:uppercase;letter-spacing:2px;opacity:0.8;margin-bottom:6px;}
-.savings-banner .sv{font-size:2.2rem;font-weight:800;line-height:1.1;}
-.savings-banner .ss{font-size:0.85rem;opacity:0.88;margin-top:6px;}
-.savings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px;}
-@media(max-width:520px){.savings-grid{grid-template-columns:1fr;}}
-.sav-item{background:rgba(255,255,255,0.15);border-radius:8px;padding:12px 14px;text-align:center;}
-.sav-item .sil{font-size:0.65rem;text-transform:uppercase;letter-spacing:1px;opacity:0.75;margin-bottom:4px;}
-.sav-item .siv{font-size:1.05rem;font-weight:800;}
+  /* CTA */
+  .cta-box {
+    background: linear-gradient(135deg, #2d1b5e, #1a0f3c);
+    border-radius: 20px; padding: 40px 32px;
+    text-align: center; margin: 40px 0 0;
+    color: white;
+  }
+  .cta-box h3 { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
+  .cta-box p { color: #b8a0ff; margin-bottom: 24px; font-size: 16px; }
+  .cta-phone {
+    display: inline-block;
+    font-size: clamp(22px, 5vw, 36px);
+    font-weight: 900; color: #7fffb2;
+    background: rgba(127,255,178,0.1);
+    border: 2px solid #7fffb2;
+    padding: 16px 40px; border-radius: 50px;
+    text-decoration: none; letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .cta-sub { font-size: 14px; color: #b8a0ff; }
 
-/* ── WHAT MARLYE DOES ── */
-.checklist{list-style:none;margin:8px 0;}
-.checklist li{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:0.88rem;line-height:1.5;}
-.checklist li:last-child{border-bottom:none;}
-.checklist li::before{content:"✅";flex-shrink:0;margin-top:1px;}
+  /* DIVIDER */
+  .divider { border: none; border-top: 2px solid #ede8ff; margin: 0; }
 
-/* ── FOOTER ── */
-.disc{background:#fffde7;border:1px solid #ffe57f;border-radius:8px;padding:10px 14px;font-size:0.72rem;color:#7a6000;margin-bottom:20px;}
-.footer{background:var(--text);color:rgba(255,255,255,0.5);text-align:center;padding:16px;font-size:0.72rem;line-height:1.9;}
-.footer a{color:var(--green);text-decoration:none;}
+  /* RATE NOTE */
+  .rate-note {
+    background: #fff8e1; border-radius: 10px; padding: 14px 18px;
+    font-size: 13px; color: #795548; margin-top: 16px;
+    border-left: 4px solid #ffc107;
+  }
+
+  @media (max-width: 600px) {
+    .compare-wrap { grid-template-columns: 1fr; }
+    .cycle-step:not(:last-child)::after { display: none; }
+    .cf-label { min-width: 140px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="hdr">
-  <div class="hdr-logo">FMFS <span>· Festa Mortgages &amp; Financial Services</span></div>
-  <div class="hdr-right">
-    Patrick Festa · Mortgage Agent | Life &amp; Mutual Funds<br>
-    <a href="mailto:patrick@fmfs.ca">patrick@fmfs.ca</a> · <a href="https://www.MeetWithFesta.ca">MeetWithFesta.ca</a>
-  </div>
-</div>
-
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-tag">Prepared for Marlye Monfiston</div>
-  <h1>The <em>Power of the Paycheque</em><br>is still working for you.</h1>
-  <div class="hero-sub">Your Manulife One account is built around your income — not your equity. Here's exactly how it works, and why a smaller account is the right fit.</div>
-  <div class="hero-ref">6867 Bilberry Drive · Orléans, ON · Lender Reference: 1099521</div>
-</div>
-
-<div class="main">
-
-<!-- DISCLAIMER -->
-<div class="disc">📋 This document is an educational summary prepared by FMFS based on your Manulife Bank commitment (May 28, 2026) and the revised structure following your property appraisal. All figures are illustrative. Your actual mortgage terms are confirmed in your signed Manulife One Operating Agreement. This is not financial, tax, or legal advice.</div>
-
-<!-- ══ SECTION 1: YOUR STRUCTURE ══ -->
-<div class="sec-hdr">
-  <span class="num">1</span><h2>Your Manulife One Structure</h2>
-  <p>Your account has three parts working together. Think of them as three drawers in one filing cabinet — all connected, all under one roof.</p>
-</div>
-
-<div class="account-grid">
-
-  <!-- Main Account -->
-  <div class="acct">
-    <div class="acct-hdr main-acct">🏦 Main Account (LOC)</div>
-    <div class="acct-body">
-      <div class="acct-amt green">$12,000</div>
-      <div class="acct-row"><span class="ak">Rate</span><span class="av">4.95% variable</span></div>
-      <div class="acct-row"><span class="ak">Type</span><span class="av">Open HELOC</span></div>
-      <div class="acct-row"><span class="ak">Payment</span><span class="av">Interest only</span></div>
-      <div class="acct-row"><span class="ak">Purpose</span><span class="av">Paycheque cycling</span></div>
-      <div><span class="acct-badge badge-open">✅ Fully Open</span></div>
-      <div style="margin-top:10px;font-size:0.75rem;color:var(--text-light);line-height:1.5;">This is where your paycheque lives. Every dollar here saves you interest every day.</div>
-    </div>
-  </div>
-
-  <!-- Sub-account 1 -->
-  <div class="acct">
-    <div class="acct-hdr sub1">🔒 Sub-Account 1</div>
-    <div class="acct-body">
-      <div class="acct-amt purple">$58,500</div>
-      <div class="acct-row"><span class="ak">Rate</span><span class="av">4.74% fixed</span></div>
-      <div class="acct-row"><span class="ak">Term</span><span class="av">5 years</span></div>
-      <div class="acct-row"><span class="ak">Amort</span><span class="av">158 months</span></div>
-      <div class="acct-row"><span class="ak">Payment</span><span class="av">~$497/mo</span></div>
-      <div><span class="acct-badge badge-fixed">⚠️ Non-Readvanceable</span></div>
-      <div style="margin-top:10px;font-size:0.75rem;color:var(--text-light);line-height:1.5;">Required by Manulife's 15% rule at your appraised value. Payments here reduce the total credit limit.</div>
-    </div>
-  </div>
-
-  <!-- Sub-account 2 -->
-  <div class="acct">
-    <div class="acct-hdr sub2">🔄 Sub-Account 2</div>
-    <div class="acct-body">
-      <div class="acct-amt blue">$241,500</div>
-      <div class="acct-row"><span class="ak">Rate</span><span class="av">4.74% fixed</span></div>
-      <div class="acct-row"><span class="ak">Term</span><span class="av">5 years</span></div>
-      <div class="acct-row"><span class="ak">Amort</span><span class="av">158 months</span></div>
-      <div class="acct-row"><span class="ak">Payment</span><span class="av">~$2,051/mo</span></div>
-      <div><span class="acct-badge badge-readv">✅ Re-advanceable</span></div>
-      <div style="margin-top:10px;font-size:0.75rem;color:var(--text-light);line-height:1.5;">The heart of the strategy. As you pay this down, room opens up in the LOC. You can re-borrow that room as needed.</div>
-    </div>
-  </div>
-
-</div>
-
-<div class="total-bar">
-  <div>
-    <div class="tl">Global Credit Limit</div>
-    <div class="tv">$312,000</div>
-  </div>
-  <div style="text-align:right;">
-    <div class="tl">Combined Monthly Payments</div>
-    <div class="tv">~$2,548 + $16.95 fee</div>
+  <div class="hero-eyebrow">Prepared for Marlye Monfiston · FMFS · Patrick Festa</div>
+  <h1>Marlye, you asked:<br><span>"Do I come out ahead?"</span></h1>
+  <p class="hero-sub">After the penalty, after the fees, after rolling everything into $312,000 — here is your honest answer.</p>
+  <div class="hero-answer">YES — by $31,684</div>
+  <p class="hero-answer-sub">And you're mortgage-free 1 year and 4 months sooner.</p>
+  <div style="margin-top:20px; display:inline-block; background:rgba(255,107,53,0.25); border:2px solid #ff6b35; border-radius:12px; padding:12px 28px; font-size:15px; color:#ffcbb8; font-weight:600;">
+    🎁 Plus $2,000 cashback available — must be confirmed before June 25
   </div>
 </div>
 
-<div class="callout blue">
-  <h4 class="blue">Why Sub-Account 1 is Non-Readvanceable</h4>
-  <p>Manulife requires that 15% of the appraised value ($58,500) sit in a fixed, non-readvanceable account. This is a regulatory rule — not a penalty. Payments on this account permanently reduce your credit limit. The remaining 65% ($241,500) is fully readvanceable, which is where the strategy lives.</p>
+<!-- URGENCY -->
+<div class="urgency">
+  ⏰ Your Manulife One commitment expires June 25, 2026 · Closing in 9 days · Sign your commitment now
 </div>
 
-
-<!-- ══ SECTION 2: WHAT IS THE POWER OF THE PAYCHEQUE ══ -->
-<div class="sec-hdr">
-  <span class="num">2</span><h2>What is "The Power of the Paycheque"?</h2>
-  <p>It's a simple idea: your mortgage charges interest <strong>every single day</strong>. If your money sits idle in a chequing account earning nothing, you're losing ground. Manulife One fixes that.</p>
-</div>
-
-<div class="callout green">
-  <h4 class="green">The Core Idea</h4>
-  <p>When you deposit your paycheque into your Manulife One Main Account, that money instantly reduces the balance you're being charged interest on — <strong>from the very first day</strong>. You don't need to make an extra payment or remember to transfer anything. Your income does the work just by sitting there.</p>
-</div>
-
-<div class="card">
-  <div class="card-hdr" style="background:var(--text);color:white;">A Simple Example</div>
-  <div class="card-body">
-    <p style="font-size:0.9rem;margin-bottom:12px;">Imagine your LOC balance is $12,000 at 4.95%.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-      <div style="background:var(--red-light);border-radius:8px;padding:14px;">
-        <div style="font-size:0.72rem;font-weight:800;text-transform:uppercase;color:var(--red);margin-bottom:6px;">Without M1</div>
-        <div style="font-size:0.85rem;line-height:1.6;">Your $3,000 paycheque sits in a chequing account earning ~0.1%.<br><br>Meanwhile, your $12,000 LOC charges you 4.95% every day.<br><br><strong>Daily interest: $1.63/day</strong></div>
-      </div>
-      <div style="background:var(--green-light);border-radius:8px;padding:14px;">
-        <div style="font-size:0.72rem;font-weight:800;text-transform:uppercase;color:var(--green-dark);margin-bottom:6px;">With M1</div>
-        <div style="font-size:0.85rem;line-height:1.6;">Your $3,000 paycheque deposits into the Main Account.<br><br>Balance becomes $9,000. Interest is now charged on $9,000.<br><br><strong>Daily interest: $1.22/day</strong> — you saved $0.41 that day, automatically.</div>
-      </div>
-    </div>
-    <div style="margin-top:12px;font-size:0.82rem;color:var(--text-light);">That $0.41/day adds up. Over a month, over a year, compounding daily — it becomes real money. And that's just on the $12,000 LOC. Your sub-accounts work the same way through the prepayment cycle described below.</div>
+<!-- NUMBERS STRIP -->
+<div class="numbers-strip">
+  <div class="number-box">
+    <span class="number-val">$31,684</span>
+    <span class="number-label">Interest saved</span>
+  </div>
+  <div class="number-box">
+    <span class="number-val">12 years</span>
+    <span class="number-label">Debt-free with M1</span>
+  </div>
+  <div class="number-box">
+    <span class="number-val">13yr 4mo</span>
+    <span class="number-label">Current way (CMLS)</span>
+  </div>
+  <div class="number-box">
+    <span class="number-val">1yr 4mo</span>
+    <span class="number-label">Sooner to freedom</span>
+  </div>
+  <div class="number-box">
+    <span class="number-val">4.74%</span>
+    <span class="number-label">Your actual sub-acct rate</span>
+  </div>
+  <div class="number-box" style="background:#ff6b35;">
+    <span class="number-val">$2,000</span>
+    <span class="number-label">Cashback available NOW</span>
   </div>
 </div>
 
+<hr class="divider">
 
-<!-- ══ SECTION 3: THE ANNUAL CYCLE ══ -->
-<div class="sec-hdr">
-  <span class="num">3</span><h2>How Your Annual Cycle Works</h2>
-  <p>The Power of the Paycheque runs on a yearly rhythm. Your $1,000/month surplus becomes the engine that accelerates your mortgage paydown.</p>
+<!-- SECTION: YOUR QUESTIONS ANSWERED -->
+<div class="section">
+  <p class="section-title">Your questions from our call — answered</p>
+  <p class="section-intro">You asked exactly the right questions. Here's each one, in plain language.</p>
+
+  <div class="q-card highlight">
+    <div class="question"><span class="q-icon">💰</span>"Considering the fees, the penalty, the balance going from $305K to $312K — do I still come out ahead?"</div>
+    <div class="answer">
+      <strong>Yes — and the $312,000 number already includes everything.</strong> The Manulife report was run at $312,000, which is your balance after the CMLS penalty (~$3,500) and closing costs are rolled in. There is nothing left to subtract. The $31,684 savings is your net number — total interest with M1 ($70,833) vs. total interest staying with CMLS ($102,517). You keep $31,684 that would otherwise go to the bank.
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="question"><span class="q-icon">🤔</span>"Does it matter that the M1 rate is 4.95% when I could get 4.1% elsewhere?"</div>
+    <div class="answer">
+      Great question — and this is the key insight: <strong>it's not about the rate, it's about how long money sits there accumulating interest.</strong> Your paycheque goes straight into the Main Account and immediately reduces your balance. Money doesn't sit idle overnight the way it does in a traditional account. The fewer days your balance is high, the less interest you're charged — even if the posted rate is slightly higher. A 4.95% rate on a balance racing toward zero beats 4.1% on a balance barely moving. <strong>And your two sub-accounts are locked at 4.74%</strong> — actually lower than what the Manulife calculator projected (4.94%) — so you'll do even better than the numbers show.
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="question"><span class="q-icon">🔄</span>"The $37,000 in the Main Account — will it ever go to zero?"</div>
+    <div class="answer">
+      <strong>Yes — and that's the whole goal.</strong> You called it a washing machine, and that's exactly right. Your bi-weekly paycheque deposits into the Main Account → balance drops → you spend on living expenses → the surplus stays in, keeping the balance lower. Every day the balance is lower, you pay less interest. Over 12 months, your surplus attacks the $37,000 until it hits zero. When it does, you sweep that freed-up room as a lump sum toward Sub-account 2 — which shrinks faster. Then the cycle starts again.
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="question"><span class="q-icon">📊</span>"Where do the sub-account payments go? How does it all fit together?"</div>
+    <div class="answer">
+      Your two sub-accounts ($497/mo and $1,840/mo) are <strong>separate, fixed scheduled payments</strong> that come out automatically every month. They pay down Sub-1 and Sub-2 on their own amortization schedule. Meanwhile, your paycheque deposits work against the Main Account $37,000 HELOC simultaneously. Three tracks running in parallel. The sub-accounts shrink on schedule. The Main Account shrinks faster every time your pay hits. You don't have to do anything — just keep your everyday banking inside Manulife One.
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="question"><span class="q-icon">➕</span>"Does this assume I make extra payments — or is it just what I already pay?"</div>
+    <div class="answer">
+      <strong>No extra payments required.</strong> The Manulife calculator uses your existing confirmed income ($6,000/mo net) and your existing living expenses ($2,200/mo). The $12,000 prepayment you already made is what brought the CMLS balance down — that work is done. Going forward, it's your regular paycheque doing the heavy lifting. You don't write any extra cheques. You just redirect your direct deposit to Manulife One and the math takes over.
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="question"><span class="q-icon">🏦</span>"If I retire before the mortgage is paid off, can I still access my equity?"</div>
+    <div class="answer">
+      <strong>This is exactly why doing this now matters.</strong> Once you're retired, your income is fixed — pension, CPP, OAS. Banks limit how much they'll lend based on that fixed income, and it's often far less than you'd need. Right now, Manulife has confirmed your salary at $126,962/year and is approving $390,000 in secured credit. Once this account is open, <strong>the HELOC room you create by paying down Sub-2 stays available — you don't have to requalify to use it.</strong> You're locking in access to your equity today, at your peak earning years, so you control the money in retirement — not the bank.
+    </div>
+  </div>
+
 </div>
 
-<!-- Monthly cash flow bar -->
-<div class="card">
-  <div class="card-hdr" style="background:#1a2a5e;color:white;">Your Monthly Cash Flow — Where Every Dollar Goes</div>
-  <div class="card-body">
-    <div class="flow-bar-wrap">
-      <div class="flow-bar">
-        <!-- Income 100%, expenses out, surplus goes to M1 -->
-        <div class="fb-seg" style="background:#2c3e6b;width:100%;justify-content:flex-start;padding-left:12px;">
-          Net income ~$6,000/mo
-        </div>
-      </div>
-      <!-- breakdown bar -->
-      <div style="margin-top:6px;">
-        <div class="flow-bar">
-          <div class="fb-seg" style="background:#c0392b;width:42.5%;">Mortgage ~$2,548</div>
-          <div class="fb-seg" style="background:#e67e22;width:36.7%;">Living + condo ~$2,200–$2,690</div>
-          <div class="fb-seg" style="background:#1c7e3e;width:8%;">Fee $17</div>
-          <div class="fb-seg" style="background:var(--green);width:12.8%;">Surplus ≈$750–$1,000</div>
-        </div>
-      </div>
+<hr class="divider">
+
+<!-- SECTION: YOUR THREE BUCKETS -->
+<div class="section">
+  <p class="section-title">Your Manulife One: 3 buckets, one account</p>
+  <p class="section-intro">Your $312,000 is split into three components. Each plays a different role in getting you debt-free.</p>
+
+  <div class="buckets">
+    <div class="bucket main-acct">
+      <div class="bucket-label">Main Account</div>
+      <div class="bucket-amount">$37,000</div>
+      <div class="bucket-rate">4.95%</div>
+      <div class="bucket-detail">Your everyday chequing account. Paycheque deposits here and immediately reduce the balance. Goal: kill this to $0 within 12 months, then sweep to Sub-2. No fixed monthly payment — just your surplus doing the work.</div>
+      <span class="bucket-badge badge-open">Open · No Penalty to Prepay</span>
     </div>
-    <div class="flow-legend">
-      <div class="fl-item"><div class="fl-dot" style="background:#c0392b;"></div>Fixed mortgage payments (Sub 1 + Sub 2)</div>
-      <div class="fl-item"><div class="fl-dot" style="background:#e67e22;"></div>Living expenses + condo fees</div>
-      <div class="fl-item"><div class="fl-dot" style="background:var(--green);"></div>Monthly surplus → sits in Main Account (LOC)</div>
+    <div class="bucket sub1">
+      <div class="bucket-label">Sub-account 1</div>
+      <div class="bucket-amount">$58,500</div>
+      <div class="bucket-rate">4.74%</div>
+      <div class="bucket-detail">Fixed 5-year term, closes June 2031. Mandatory payment: $497.08/month. Payments here permanently reduce your overall credit limit — the room does not reopen.</div>
+      <span class="bucket-badge badge-nonreadv">Non-Readvanceable</span>
     </div>
-    <div style="margin-top:10px;font-size:0.78rem;color:var(--text-light);">* Monthly net income estimated at ~$6,000 based on confirmed annual salary of $126,962. Actual take-home will vary based on tax situation.</div>
+    <div class="bucket sub2">
+      <div class="bucket-label">Sub-account 2 ⭐</div>
+      <div class="bucket-amount">$216,500</div>
+      <div class="bucket-rate">4.74%</div>
+      <div class="bucket-detail">Fixed 5-year term, closes June 2031. Mandatory payment: $1,839.62/month. As this pays down, room reopens in your Main Account HELOC — this is what makes the annual sweep strategy work.</div>
+      <span class="bucket-badge badge-readv">Re-advanceable ✓</span>
+    </div>
+  </div>
+
+  <div class="rate-note">
+    💡 <strong>Good news:</strong> The Manulife savings calculator modelled your sub-accounts at 4.94%. Your actual commitment locks in <strong>4.74%</strong> — 0.20% lower on $275,000 in sub-account balances. Your real savings will be slightly better than the $31,684 projected.
   </div>
 </div>
 
-<!-- Annual cycle steps -->
-<div class="annual-cycle">
-  <h3>The Annual Paycheque Cycle</h3>
-  <div class="ac-steps">
+<hr class="divider">
 
-    <div class="ac-step">
-      <div class="ac-num" style="background:var(--blue);color:white;">1</div>
-      <div class="ac-content">
-        <div class="ac-title">Every month: Paycheque deposits into the Main Account</div>
-        <div class="ac-desc">Your income lands in the M1 Main Account (LOC). Your regular expenses come out — mortgage payments, condo fees, groceries, bills. <strong>The leftover stays in the LOC</strong> and reduces your balance every single day.</div>
+<!-- SECTION: THE WASHING MACHINE -->
+<div class="section">
+  <p class="section-title">The washing machine — how the cycle works</p>
+  <p class="section-intro">You used the washing machine analogy on our call. It's perfect. Here's exactly how the cycle runs month by month.</p>
+
+  <div class="machine">
+    <h3>🔄 The Monthly Cycle</h3>
+    <p>Your money goes in, the balance drops, interest charges on less, surplus stays behind, repeat.</p>
+    <div class="cycle-steps">
+      <div class="cycle-step">
+        <div class="step-icon">💵</div>
+        <div class="step-label">Paycheque in</div>
+        <div class="step-desc">~$3,000 bi-weekly hits the Main Account</div>
+      </div>
+      <div class="cycle-step">
+        <div class="step-icon">📉</div>
+        <div class="step-label">Balance drops</div>
+        <div class="step-desc">$37,000 → $34,000 → keeps falling daily</div>
+      </div>
+      <div class="cycle-step">
+        <div class="step-icon">🧾</div>
+        <div class="step-label">Life happens</div>
+        <div class="step-desc">Groceries, bills, expenses come out normally</div>
+      </div>
+      <div class="cycle-step">
+        <div class="step-icon">✅</div>
+        <div class="step-label">Surplus stays</div>
+        <div class="step-desc">$1,463/mo extra keeps attacking the balance</div>
+      </div>
+      <div class="cycle-step">
+        <div class="step-icon">🎯</div>
+        <div class="step-label">~Month 25</div>
+        <div class="step-desc">Main Account hits $0. Sweep to Sub-2. Repeat.</div>
       </div>
     </div>
-
-    <div class="ac-step">
-      <div class="ac-num" style="background:#e67e22;color:white;">2</div>
-      <div class="ac-content">
-        <div class="ac-title">Monthly surplus accumulates — ~$750 to $1,000/month</div>
-        <div class="ac-desc">Every month you don't spend your full income, that surplus chips away at the $12,000 LOC balance. <strong>While it's sitting there, it's saving you ~4.95% interest per year</strong> — far better than any savings account.</div>
-      </div>
-    </div>
-
-    <div class="ac-step">
-      <div class="ac-num" style="background:var(--gold);color:white;">3</div>
-      <div class="ac-content">
-        <div class="ac-title">Once a year: ~$12,000 has been paid into the LOC</div>
-        <div class="ac-desc">By the end of 12 months, your surplus has paid down roughly <strong>$12,000</strong> of the LOC balance. The LOC room is now available again — this is the key moment.</div>
-      </div>
-    </div>
-
-    <div class="ac-step">
-      <div class="ac-num" style="background:var(--green-dark);color:white;">4</div>
-      <div class="ac-content">
-        <div class="ac-title">Apply the lump sum: Draw $12,000 from LOC → prepay Sub-Account 2</div>
-        <div class="ac-desc">You re-advance $12,000 from the LOC and apply it as a <strong>lump-sum prepayment</strong> against Sub-Account 2 ($241,500 readvanceable). This directly reduces the principal you're paying 4.74% interest on — and re-opens that $12,000 of LOC room for the next cycle.</div>
-      </div>
-    </div>
-
-    <div class="ac-step">
-      <div class="ac-num" style="background:var(--green);color:white;">↺</div>
-      <div class="ac-content">
-        <div class="ac-title">Repeat every year — the compound effect grows</div>
-        <div class="ac-desc">Each year the strategy runs, <strong>your sub-account balance is lower</strong>, which means lower monthly payments, which means a slightly larger surplus the next year. The cycle compounds and accelerates automatically over time.</div>
-      </div>
-    </div>
-
   </div>
-</div>
 
-<div class="callout green">
-  <h4 class="green">The Paycheque Cycle in One Sentence</h4>
-  <p><strong>Paycheque → Main Account → Surplus reduces LOC balance → Annual lump sum prepayment on Sub-Account 2 → Repeat.</strong><br><br>
-  You don't need a big LOC for this to work. You just need the LOC to be sized to your cash flow — and for you, that's $12,000.</p>
-</div>
-
-
-<!-- ══ SECTION 4: THE SMALLER SANDBOX ══ -->
-<div class="sec-hdr">
-  <span class="num">4</span><h2>The "Smaller Sandbox" — Why This Is Still Good News</h2>
-  <p>Your appraisal came in at $390,000, not $430,000. Here's what actually changed — and what didn't.</p>
-</div>
-
-<div class="sandbox">
-  <h3>Lower Appraisal ≠ Strategy Dead</h3>
-  <p style="font-size:0.88rem;opacity:0.9;margin-bottom:14px;">Christina's key insight — and it's an important one — is that <strong>the Power of the Paycheque is driven by your income, not your equity.</strong> The appraisal determines the size of the sandbox. Your paycheque is the shovel. The shovel still works in a smaller sandbox.</p>
-  <div class="sandbox-grid">
-    <div class="sandbox-item">
-      <div class="si-lbl">What Changed</div>
-      <div class="si-val">Smaller LOC</div>
-      <div class="si-sub">$12K instead of $50K — but sized exactly to your $12K/year surplus. No wasted room.</div>
+  <!-- CASHFLOW BREAKDOWN -->
+  <div class="cashflow">
+    <div class="cashflow-title">Your monthly cash flow inside Manulife One</div>
+    <div class="cf-row">
+      <div class="cf-label">Net monthly income</div>
+      <div class="cf-bar-wrap"><div class="cf-bar bar-income"><span>$6,000</span></div></div>
+      <div class="cf-val" style="color:#2d1b5e;">+$6,000</div>
     </div>
-    <div class="sandbox-item">
-      <div class="si-lbl">What Changed</div>
-      <div class="si-val">Less Borrowing Room</div>
-      <div class="si-sub">$312K global limit vs. $325K. You still pay out your existing mortgage and close on time.</div>
+    <div class="cf-row">
+      <div class="cf-label">Sub-account payments (auto)</div>
+      <div class="cf-bar-wrap"><div class="cf-bar bar-sub"><span>$2,337</span></div></div>
+      <div class="cf-val" style="color:#9c27b0;">−$2,337</div>
     </div>
-    <div class="sandbox-item">
-      <div class="si-lbl">What Did NOT Change</div>
-      <div class="si-val">Daily Interest Savings</div>
-      <div class="si-sub">Your paycheque still offsets interest every single day from Day 1.</div>
+    <div class="cf-row">
+      <div class="cf-label">Monthly living expenses</div>
+      <div class="cf-bar-wrap"><div class="cf-bar bar-living"><span>$2,200</span></div></div>
+      <div class="cf-val" style="color:#e65100;">−$2,200</div>
     </div>
-    <div class="sandbox-item">
-      <div class="si-lbl">What Did NOT Change</div>
-      <div class="si-val">Annual Prepayment</div>
-      <div class="si-sub">~$12K/year applied to the readvanceable sub-account. The cycle is identical.</div>
-    </div>
-    <div class="sandbox-item">
-      <div class="si-lbl">What Did NOT Change</div>
-      <div class="si-val">Mortgage Acceleration</div>
-      <div class="si-sub">You still finish your mortgage years ahead of the standard 158-month schedule.</div>
-    </div>
-    <div class="sandbox-item">
-      <div class="si-lbl">Christina's Word for It</div>
-      <div class="si-val">"Smaller Sandbox"</div>
-      <div class="si-sub">Same strategy. Same result. Just calibrated to your actual cash flow, not a theoretical maximum.</div>
+    <div class="cf-surplus-row">
+      <div class="small">Surplus automatically attacking the $37,000 Main Account every month</div>
+      <div class="big">+$1,463 / month</div>
+      <div class="small">No extra payments required — this is just your existing income minus your existing expenses.</div>
     </div>
   </div>
 </div>
 
-<div class="callout gold">
-  <h4 class="gold">Why $12,000 Is Actually the Right Number</h4>
-  <p>There's no point having a $50,000 LOC if you can only cycle $12,000 through it per year. A large idle LOC doesn't save you more interest — only the money <em>actually cycling through it</em> does. Christina sized your Main Account to match your real cash flow. That's not a limitation. <strong>That's precise engineering.</strong></p>
+<hr class="divider">
+
+<!-- SECTION: THE NUMBERS -->
+<div class="section">
+  <p class="section-title">The official numbers — side by side</p>
+  <p class="section-intro">From the Manulife One official calculator, run with your actual income, expenses, and the full $312,000 balance (penalty and fees already included).</p>
+
+  <div class="compare-wrap">
+    <div class="compare-card current">
+      <div class="compare-label">Staying with CMLS</div>
+      <div class="compare-interest">$102,517</div>
+      <div class="compare-time">Total interest paid</div>
+      <div class="compare-detail">Debt-free in 13 years, 4 months<br>Rate: 4.59% · Renews May 2027<br>Balance today: $305,051</div>
+    </div>
+    <div class="compare-card m1">
+      <div class="compare-label">With Manulife One</div>
+      <div class="compare-interest">$70,833</div>
+      <div class="compare-time">Total interest paid</div>
+      <div class="compare-detail">Debt-free in 12 years, 0 months<br>Sub-accts: 4.74% · Main: 4.95%<br>Starting balance: $312,000 (fees in)</div>
+    </div>
+  </div>
+  <div class="savings-banner">
+    <div class="savings-num">$31,684 saved · 16 months sooner</div>
+    <div class="savings-label">All fees and penalty already included in the Manulife starting balance · Nothing extra to subtract</div>
+  </div>
 </div>
 
+<hr class="divider">
 
-<!-- ══ SECTION 5: BEFORE vs AFTER ══ -->
-<div class="sec-hdr">
-  <span class="num">5</span><h2>Before vs. After — Your Situation</h2>
-  <p>Here's what changes when you move from your existing CMLS mortgage to Manulife One.</p>
+<!-- SECTION: PENALTY MATH -->
+<div class="section">
+  <p class="section-title">Was the penalty worth paying?</p>
+  <p class="section-intro">You raised this directly. Here's the math, plainly.</p>
+
+  <div class="penalty-box">
+    <div class="penalty-title">The cost to switch — already inside the $312K</div>
+    <div class="penalty-math">
+      <div class="math-box">
+        <div class="math-val">$3,500</div>
+        <div class="math-label">CMLS 3-month interest penalty on $305K @ 4.59%</div>
+      </div>
+      <div class="math-op">+</div>
+      <div class="math-box">
+        <div class="math-val">~$3,500</div>
+        <div class="math-label">Legal fees, title insurance, admin costs</div>
+      </div>
+      <div class="math-op">=</div>
+      <div class="math-box result">
+        <div class="math-val">~$7,000</div>
+        <div class="math-label">Total cost to switch (already rolled into $312K)</div>
+      </div>
+    </div>
+    <div style="background:#e8f5e9; border-radius:10px; padding:20px; margin-top:16px;">
+      <p style="font-size:15px; color:#1b5e20; font-weight:700; margin-bottom:10px;">The verdict: worth it by a wide margin.</p>
+      <p style="font-size:14px; color:#2e7d32; line-height:1.7;">
+        You paid ~$7,000 to switch. Manulife's calculator — already starting at $312,000 — shows you save <strong>$31,684</strong> in interest. That's a <strong>4.5× return on switching cost</strong>. The break-even is roughly 2–3 years in. After that, every year is pure savings.
+      </p>
+    </div>
+  </div>
 </div>
 
-<div class="card">
-  <div class="card-hdr" style="background:#f8f9fa;color:var(--text);">Comparison</div>
-  <div class="card-body" style="padding:0;">
-    <table class="comp-table">
+<hr class="divider">
+
+<!-- SECTION: YEAR BY YEAR -->
+<div class="section">
+  <p class="section-title">Year-by-year paydown — from the official Manulife report</p>
+  <p class="section-intro">Not estimates. These are directly from the Manulife One calculator run on June 16, 2026, at your actual income and balance.</p>
+
+  <div class="table-wrap">
+    <table class="year-table">
       <thead>
         <tr>
-          <th class="metric">What</th>
-          <th class="before">❌ Before — CMLS Mortgage</th>
-          <th class="after">✅ After — Manulife One</th>
+          <th>Year</th>
+          <th>M1 Principal Paid</th>
+          <th>M1 Interest</th>
+          <th>M1 Balance Left</th>
+          <th>Progress</th>
+          <th>CMLS Balance (if stayed)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="metric">Monthly payment</td>
-          <td class="before">~$2,873/mo ($663/week)</td>
-          <td class="after">~$2,548/mo (saves ~$325/mo)</td>
+          <td><strong>1</strong></td>
+          <td>$31,036</td>
+          <td>$14,564</td>
+          <td>$284,747</td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:8.7%"></div></div></td>
+          <td style="color:#c62828;">$294,261</td>
         </tr>
         <tr>
-          <td class="metric">Interest compounding</td>
-          <td class="before">Monthly (standard)</td>
-          <td class="after">Daily — every dollar reduces your balance immediately</td>
+          <td><strong>2</strong></td>
+          <td>$32,576</td>
+          <td>$13,024</td>
+          <td>$252,374</td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:19.1%"></div></div></td>
+          <td style="color:#c62828;">$275,699</td>
         </tr>
         <tr>
-          <td class="metric">Your paycheque</td>
-          <td class="before">Sits in chequing, earns nothing</td>
-          <td class="after">Reduces mortgage balance from Day 1</td>
+          <td><strong>3</strong></td>
+          <td>$34,193</td>
+          <td>$11,407</td>
+          <td>$218,385</td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:30.1%"></div></div></td>
+          <td style="color:#c62828;">$256,275</td>
         </tr>
         <tr>
-          <td class="metric">Extra prepayments</td>
-          <td class="before">Manual transfers required; easy to forget</td>
-          <td class="after">Built into the annual LOC cycle automatically</td>
+          <td><strong>4</strong></td>
+          <td>$35,890</td>
+          <td>$9,710</td>
+          <td>$182,698</td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:41.4%"></div></div></td>
+          <td style="color:#c62828;">$235,949</td>
         </tr>
         <tr>
-          <td class="metric">Rate</td>
-          <td class="before">Your existing rate (likely higher at renewal)</td>
-          <td class="after">Sub-accts: 4.74% fixed (5yr) · LOC: 4.95% variable</td>
+          <td><strong>5</strong></td>
+          <td>$37,672</td>
+          <td>$7,928</td>
+          <td>$145,229</td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:53.5%"></div></div></td>
+          <td style="color:#c62828;">$214,679</td>
         </tr>
         <tr>
-          <td class="metric">Banking</td>
-          <td class="before">Separate chequing + mortgage accounts</td>
-          <td class="after">All-in-one. Debit card, e-transfers, unlimited transactions included in the $16.95/mo fee</td>
+          <td><strong>6</strong></td>
+          <td>$39,543</td>
+          <td>$6,057</td>
+          <td>$105,889</td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.1%"></div></div></td>
+          <td style="color:#c62828;">$192,422</td>
         </tr>
         <tr>
-          <td class="metric">Mortgage-free date</td>
-          <td class="before">158 months (13 yrs 2 mo) — or later</td>
-          <td class="after">Estimated earlier with annual $12K prepayments cycling through the strategy</td>
+          <td><strong>7</strong></td>
+          <td>$41,508</td>
+          <td>$4,092</td>
+          <td>$64,585</td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:79.3%"></div></div></td>
+          <td style="color:#c62828;">$169,132</td>
+        </tr>
+        <tr>
+          <td><strong>8</strong></td>
+          <td>$43,571</td>
+          <td>$2,029</td>
+          <td>$21,218</td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:93.2%"></div></div></td>
+          <td style="color:#c62828;">$144,760</td>
+        </tr>
+        <tr>
+          <td><strong>9–12</strong></td>
+          <td colspan="2" style="color:#2e7d32; font-weight:700;">Final stretch — balance clears completely</td>
+          <td style="color:#2e7d32; font-weight:800;">$0 ✓</td>
+          <td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:100%"></div></div></td>
+          <td style="color:#c62828;">$119K → $35K → finishing…</td>
+        </tr>
+        <tr class="highlight-row">
+          <td colspan="6">🎉 MORTGAGE-FREE at Year 12 with Manulife One &nbsp;|&nbsp; CMLS: still 1 year and 4 months to go</td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
 
+<hr class="divider">
 
-<!-- ══ SECTION 6: WHAT YOU NEED TO DO ══ -->
-<div class="sec-hdr">
-  <span class="num">6</span><h2>What You Need to Do — Your Simple Action Plan</h2>
-  <p>The strategy runs almost automatically once it's set up. Here's your checklist.</p>
+<!-- SECTION: RETIREMENT / BIG PICTURE -->
+<div class="section">
+  <p class="section-title">The bigger picture: your equity, your retirement</p>
+  <p class="section-intro">You're not just paying off a mortgage. You're building a financial platform for the years ahead.</p>
+
+  <div class="retirement-box">
+    <h3>Why Sub-account 2 being Re-advanceable changes everything</h3>
+    <p>Every dollar you pay down on Sub-2 ($216,500) reopens room in your Main Account HELOC. That's equity you can access on your terms — without reapplying for a mortgage.</p>
+    <div class="retirement-points">
+      <div class="ret-point">
+        <div class="ret-icon">🔐</div>
+        <div class="ret-title">Lock in credit now</div>
+        <div class="ret-desc">Your $126,962 confirmed salary gets you $390K in secured credit. On a retirement income, you'd qualify for far less. Do it now, keep that access forever.</div>
+      </div>
+      <div class="ret-point">
+        <div class="ret-icon">💳</div>
+        <div class="ret-title">Room reopens as you pay</div>
+        <div class="ret-desc">Sub-2 is re-advanceable. As the balance drops, HELOC room grows back. You can use it for renovations, investing, or emergencies — no new application needed.</div>
+      </div>
+      <div class="ret-point">
+        <div class="ret-icon">🏠</div>
+        <div class="ret-title">Equity that works for you</div>
+        <div class="ret-desc">A paid-down home with a locked-in HELOC is a financial asset. You decide when and how to use it — not the bank, and not your future income.</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="card">
-  <div class="card-body">
-    <ul class="checklist">
-      <li><strong>Set up direct deposit.</strong> Have your employer deposit your paycheque directly into the Manulife One Main Account. This is the single most important step.</li>
-      <li><strong>Pay all expenses from the Main Account.</strong> Use the Manulife One debit card for everyday spending and bills. The more you cycle through the account, the more interest you save.</li>
-      <li><strong>Don't let the LOC go positive.</strong> If your balance goes above $0, that money is sitting idle instead of working. Keep it at $0 or below (i.e., drawing on the LOC to pay expenses is fine — that's the point).</li>
-      <li><strong>Once a year: execute the sweep.</strong> When your LOC balance has been paid down by ~$12,000, re-advance that $12,000 and apply it as a prepayment on Sub-Account 2. You can do this online or with a phone call to Manulife Bank at 1-877-765-2265.</li>
-      <li><strong>Renew and review at 5 years.</strong> Your term ends in June 2031. At renewal, Sub-Account 2 will have significantly less owing — because of the annual prepayments. Review your rate and consider accelerating further.</li>
-    </ul>
+<hr class="divider">
+
+<!-- SECTION: PROMOTION -->
+<div class="section">
+  <p class="section-title">🎁 There's $2,000 in cashback with your name on it</p>
+  <p class="section-intro">Manulife is running a limited-time cashback promotion. Your advanced amount qualifies — but you must choose before closing.</p>
+
+  <div style="background:white; border-radius:16px; box-shadow:0 2px 16px rgba(0,0,0,0.07); overflow:hidden; margin-bottom:20px;">
+    <!-- Promo header -->
+    <div style="background:linear-gradient(135deg,#ff6b35,#e84c00); color:white; padding:24px 32px; text-align:center;">
+      <div style="font-size:12px; letter-spacing:2px; text-transform:uppercase; opacity:0.85; margin-bottom:8px;">Limited-Time Manulife Promotion</div>
+      <div style="font-size:36px; font-weight:900; margin-bottom:4px;">$2,000 Cashback</div>
+      <div style="font-size:14px; opacity:0.9;">Your advanced amount of $305,980 falls in the $300K–$499,999 bracket</div>
+    </div>
+    <!-- Promo body -->
+    <div style="padding:28px 32px;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;">
+        <div style="background:#fff3e0; border:2px solid #ff9800; border-radius:12px; padding:20px; text-align:center;">
+          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#e65100; margin-bottom:8px;">Option A — Cashback</div>
+          <div style="font-size:32px; font-weight:900; color:#e65100; margin-bottom:4px;">$2,000</div>
+          <div style="font-size:13px; color:#777;">One-time cash deposited into your M1 account</div>
+          <div style="margin-top:12px; background:#e65100; color:white; border-radius:20px; padding:6px 16px; font-size:13px; font-weight:700; display:inline-block;">✓ Recommended</div>
+        </div>
+        <div style="background:#f5f4f0; border:2px solid #ccc; border-radius:12px; padding:20px; text-align:center;">
+          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#777; margin-bottom:8px;">Option B — Fee Waiver</div>
+          <div style="font-size:32px; font-weight:900; color:#999; margin-bottom:4px;">$610</div>
+          <div style="font-size:13px; color:#777;">3 years × $16.95/mo fee waived</div>
+          <div style="margin-top:12px; background:#ccc; color:white; border-radius:20px; padding:6px 16px; font-size:13px; font-weight:700; display:inline-block;">$1,390 less than cashback</div>
+        </div>
+      </div>
+      <div style="background:#e8f5e9; border-radius:10px; padding:18px 20px; border-left:4px solid #43a047;">
+        <p style="font-size:15px; font-weight:700; color:#1b5e20; margin-bottom:6px;">Take the cashback. Here's why.</p>
+        <p style="font-size:14px; color:#2e7d32; line-height:1.7;">The $2,000 cashback is deposited directly into your Manulife One account, which immediately reduces your balance — saving you even more interest on top of the $31,684 already projected. The fee waiver is only worth $610 over 3 years. Cashback wins by $1,390, and then keeps working for you inside the account.</p>
+      </div>
+      <div style="background:#fff3cd; border-radius:10px; padding:14px 18px; margin-top:16px; border-left:4px solid #ffc107; font-size:13px; color:#795548;">
+        ⚠️ <strong>You cannot combine both promotions</strong> — it's one or the other. And the deal must be <strong>submitted before end of June</strong> and <strong>funded before end of October</strong>. Your June 25 closing qualifies — but Patrick needs to tag the cashback promotion before it funds. Confirm with him today.
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="callout blue">
-  <h4 class="blue">You Don't Have to Be Perfect</h4>
-  <p>If you have a month where expenses are higher and there's no surplus — that's fine. The strategy doesn't break. You simply don't make that month's contribution to the LOC. The next month, you pick up where you left off. <strong>Consistency over time is what creates the result, not perfection every month.</strong></p>
-</div>
+<hr class="divider">
 
+<!-- SECTION: NEXT STEPS -->
+<div class="section">
+  <p class="section-title">Your next steps — closing June 25</p>
+  <p class="section-intro">Nine days to closing. Here's everything you need to do, in order.</p>
 
-<!-- ══ SECTION 7: YOUR BIG PICTURE ══ -->
-<div class="sec-hdr">
-  <span class="num">7</span><h2>Your Big Picture</h2>
-  <p>Over 13 years at $12,000/year in extra prepayments, this is what the strategy can look like.</p>
-</div>
-
-<div class="savings-banner">
-  <div class="sl">Estimated Interest Savings — Sub-Account 2 Alone</div>
-  <div class="sv">~$30,000 – $40,000</div>
-  <div class="ss">By applying ~$12,000/year as extra principal payments on Sub-Account 2 ($241,500 at 4.74%)</div>
-  <div class="savings-grid">
-    <div class="sav-item">
-      <div class="sil">Without extra prepayments</div>
-      <div class="siv">~$84,000 interest</div>
+  <div class="checklist">
+    <div class="check-item">
+      <div class="check-num" style="background:#ff6b35;">★</div>
+      <div class="check-content">
+        <div class="check-title">Confirm the $2,000 cashback promotion with Patrick — do this today</div>
+        <div class="check-desc">Your advanced amount of $305,980 qualifies for $2,000 cashback. Patrick must tag this before your deal funds on June 25. Don't close without confirming this is selected — you cannot add it afterward.</div>
+      </div>
     </div>
-    <div class="sav-item">
-      <div class="sil">With annual $12K prepayments</div>
-      <div class="siv">~$50,000 interest</div>
+    <div class="check-item">
+      <div class="check-num">1</div>
+      <div class="check-content">
+        <div class="check-title">Sign your commitment letter — do this today</div>
+        <div class="check-desc">Lender Ref #1099521. Commitment expires June 25, 2026. Sign and return it to Patrick or Zeynep Babir (your broker). If you have questions before signing, call Manulife: 1-844-593-4575.</div>
+      </div>
     </div>
-    <div class="sav-item">
-      <div class="sil">Time saved (Sub-Acct 2)</div>
-      <div class="siv">~4 years sooner</div>
+    <div class="check-item">
+      <div class="check-num">2</div>
+      <div class="check-content">
+        <div class="check-title">Confirm your solicitor with Patrick</div>
+        <div class="check-desc">The solicitor will pay out CMLS ($305,051.81) on closing day and register the new Manulife mortgage. Provide name, address, phone, and fax to Patrick now — Manulife needs 10 business days minimum before closing.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-num">3</div>
+      <div class="check-content">
+        <div class="check-title">Submit the Funds Transfer Agreement + Void Cheque</div>
+        <div class="check-desc">This lets money move between Manulife One and your existing bank account. Required before funding. Your broker or solicitor will walk you through this.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-num">4</div>
+      <div class="check-content">
+        <div class="check-title">After closing: redirect your direct deposit</div>
+        <div class="check-desc">Have your employer send your paycheque to your new Manulife One account number. This is what activates the interest suppression. Without this step, the account doesn't work the way the numbers show.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-num">5</div>
+      <div class="check-content">
+        <div class="check-title">Move your everyday banking into M1</div>
+        <div class="check-desc">Bill payments, auto-debits, and day-to-day spending — move it all into Manulife One. Every dollar that flows through the account suppresses your balance and saves you interest.</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-num">6</div>
+      <div class="check-content">
+        <div class="check-title">Year 1 review — the Sub-2 sweep</div>
+        <div class="check-desc">After 12–25 months, your Main Account HELOC will be near $0. Call Patrick before doing anything — he'll walk you through taking that freed-up room and applying it as a lump sum to Sub-account 2 (re-advanceable). Sub-2 drops, more room reopens, and you repeat the cycle annually.</div>
+      </div>
     </div>
   </div>
-  <div style="font-size:0.72rem;opacity:0.7;margin-top:12px;">Estimates assume consistent $12,000/year prepayment. Actual results will vary based on rate changes, income, and spending. This is illustrative only.</div>
-</div>
 
-<div class="callout gold">
-  <h4 class="gold">The Real Message</h4>
-  <p>Your strength is not the size of the sandbox. It's your income and your discipline. A $126,962 salary cycling through Manulife One — even with a $12,000 LOC — will outperform a traditional mortgage with a much larger LOC that never gets used. <strong>The strategy works because <em>you</em> work the strategy.</strong></p>
+  <!-- CTA -->
+  <div class="cta-box">
+    <h3>Questions before you sign?</h3>
+    <p>Call Manulife directly or reach out to Patrick. Don't let this commitment expire.</p>
+    <a class="cta-phone" href="tel:18445934575">1-844-593-4575</a><br>
+    <span class="cta-sub">Manulife Bank · Lender: Andreea Muntean · 16 York Street, Suite 1900, Toronto, ON M5J 0E6</span>
+    <br><br>
+    <span class="cta-sub" style="margin-top:16px; display:block;">Patrick Festa · FMFS · <strong>patrick@fmfs.ca</strong> · <strong>www.MeetWithFesta.ca</strong></span>
+  </div>
 </div>
-
-</div><!-- /main -->
 
 <!-- FOOTER -->
-<div class="footer">
-  Manulife One is offered through Manulife Bank of Canada. Rates, terms, and structure are subject to change and confirmed in your signed Operating Agreement.<br>
-  This summary is prepared by <a href="https://www.MeetWithFesta.ca">Festa Mortgages &amp; Financial Services (FMFS)</a> for educational purposes only. Not a guarantee of approval, rate, or investment return.<br>
-  Patrick Festa · Mortgage Agent (via 8Twelve Mortgage) · Life Insurance Agent · Mutual Fund Agent (via Primerica Canada)<br>
-  <a href="mailto:patrick@fmfs.ca">patrick@fmfs.ca</a> · <a href="https://www.MeetWithFesta.ca">www.MeetWithFesta.ca</a>
+<div style="background:#1a0f3c; color:#8a7ab5; text-align:center; padding:24px; font-size:12px; line-height:1.8;">
+  Prepared by Patrick Festa · FMFS · Mortgage Agent | Life Insurance Agent | Mutual Fund Agent<br>
+  patrick@fmfs.ca · www.MeetWithFesta.ca<br><br>
+  <em>This document is for illustrative purposes only. All projections are based on Manulife Bank's official calculator (June 16, 2026) and the approved commitment letter (Lender Ref #1099521). Interest rates may change. This is not a guarantee of results. Mortgage approval is subject to Manulife Bank's conditions as outlined in the commitment letter. For tax questions, consult your accountant. For legal questions, consult your solicitor.</em>
 </div>
 
 </body>
