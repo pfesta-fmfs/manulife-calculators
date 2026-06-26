@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Mortgage Commitment Explained — Ryan & Maria</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0B2545;
+      --mid:    #1B4F8A;
+      --accent: #2E86DE;
+      --gold:   #F5A623;
+      --green:  #27AE60;
+      --red:    #E74C3C;
+      --light:  #F4F7FB;
+      --border: #DDE3EE;
+      --text:   #1A1A2E;
+      --muted:  #6B7A99;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── PIN GATE ── */
+    #pin-gate {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #0B2545 0%, #1B4F8A 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 24px;
+    }
+    #pin-gate .gate-logo {
+      font-size: 13px;
+      color: rgba(255,255,255,.6);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    #pin-gate .gate-logo strong { color: #fff; font-size: 17px; display: block; margin-bottom: 4px; }
+    #pin-gate h2 {
+      color: #fff;
+      font-size: 22px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    #pin-gate p {
+      color: rgba(255,255,255,.65);
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .pin-inputs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .pin-inputs input {
+      width: 56px;
+      height: 64px;
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+      caret-color: transparent;
+      transition: border-color .2s;
+    }
+    .pin-inputs input:focus { border-color: rgba(255,255,255,.7); }
+    #pin-error {
+      color: #FF6B6B;
+      font-size: 13px;
+      text-align: center;
+      min-height: 20px;
+      margin-bottom: 16px;
+    }
+    #pin-submit {
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 40px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    #pin-submit:hover { opacity: .9; }
+    #pin-gate .gate-note {
+      margin-top: 24px;
+      font-size: 12px;
+      color: rgba(255,255,255,.35);
+      text-align: center;
+    }
+
+    /* ── PAGE CONTENT (hidden until PIN passed) ── */
+    #page-content { display: none; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--mid) 100%);
+      color: #fff;
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+    .hero .approved-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .hero .approved-pill::before { content: "✓"; font-size: 15px; }
+    .hero h1 {
+      font-size: clamp(22px, 5vw, 34px);
+      font-weight: 800;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .hero .subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,.75);
+      max-width: 520px;
+      margin: 0 auto 24px;
+    }
+    .hero .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .hero .meta-chip {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: rgba(255,255,255,.9);
+    }
+    .hero .meta-chip strong {
+      display: block;
+      font-size: 17px;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 820px; margin: 0 auto; padding: 0 16px 60px; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 36px 0 14px;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 14px;
+    }
+    .card h2 { font-size: 17px; font-weight: 700; margin-bottom: 6px; color: var(--navy); }
+    .card p  { font-size: 14px; color: var(--muted); margin-bottom: 0; }
+
+    /* ── LOAN PARTS ── */
+    .loan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 560px) { .loan-grid { grid-template-columns: 1fr; } }
+
+    .loan-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 22px;
+      border: 2px solid var(--border);
+    }
+    .loan-card.part1 { border-color: var(--accent); }
+    .loan-card.part2 { border-color: var(--gold); }
+
+    .loan-card .part-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .part1 .part-label { color: var(--accent); }
+    .part2 .part-label { color: #C07E00; }
+
+    .loan-card .amount { font-size: 28px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+    .loan-card .rate-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .part1 .rate-badge { background: #E8F3FF; color: var(--accent); }
+    .part2 .rate-badge { background: #FFF6E0; color: #C07E00; }
+
+    .loan-card .detail-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .loan-card .detail-row:last-child { border-bottom: none; }
+    .loan-card .detail-row .label { color: var(--muted); }
+    .loan-card .detail-row .value { font-weight: 600; color: var(--text); }
+
+    .heloc-explainer {
+      margin-top: 14px;
+      background: #E8F3FF;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: #1B4F8A;
+      line-height: 1.5;
+    }
+    .heloc-explainer strong { display: block; margin-bottom: 4px; }
+
+    /* ── RATE SLIDER ── */
+    .slider-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+    .slider-card h2 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .slider-card .slider-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+
+    .rate-display { display: flex; align-items: baseline; gap: 6px; margin-bottom: 16px; }
+    .rate-display .big-rate { font-size: 38px; font-weight: 800; color: var(--accent); line-height: 1; }
+    .rate-display .rate-label { font-size: 14px; color: var(--muted); }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(to right, var(--accent) 0%, var(--accent) 50%, var(--border) 50%);
+      outline: none;
+      margin-bottom: 8px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,.2);
+      cursor: pointer;
+    }
+
+    .slider-ticks { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 20px; }
+
+    .payment-breakdown { background: var(--light); border-radius: 10px; padding: 16px; }
+    .payment-row { display: flex; justify-content: space-between; font-size: 14px; padding: 5px 0; }
+    .payment-row .p-label { color: var(--muted); }
+    .payment-row .p-val { font-weight: 600; }
+    .payment-row.total { border-top: 2px solid var(--border); margin-top: 8px; padding-top: 10px; font-size: 16px; font-weight: 700; }
+    .payment-row.total .p-val { color: var(--navy); }
+
+    /* ── MONEY FLOW ── */
+    .flow-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 22px 24px; }
+    .flow-card h2 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+    .flow-item { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .flow-item:last-child { border-bottom: none; }
+    .flow-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .flow-icon.in  { background: #E9F7EF; }
+    .flow-icon.out { background: #FDEDEC; }
+    .flow-icon.fee { background: #FEF9E7; }
+    .flow-text .flow-title { font-weight: 600; font-size: 14px; }
+    .flow-text .flow-amt   { font-size: 13px; color: var(--muted); }
+    .flow-text .flow-amt strong { color: var(--text); }
+
+    /* ── CONDITIONS ── */
+    .conditions-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 22px 24px; }
+    .conditions-card h2 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .conditions-card .deadline-note { font-size: 13px; color: var(--red); font-weight: 600; margin-bottom: 16px; }
+    .condition-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+      cursor: pointer; user-select: none;
+    }
+    .condition-item:last-child { border-bottom: none; }
+    .condition-check {
+      width: 22px; height: 22px; border-radius: 6px;
+      border: 2px solid var(--border); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px; transition: all .15s;
+    }
+    .condition-item.done .condition-check { background: var(--green); border-color: var(--green); color: #fff; font-size: 13px; }
+    .condition-item.done .condition-text { text-decoration: line-through; color: var(--muted); }
+    .condition-text .cond-title { font-size: 14px; font-weight: 600; }
+    .condition-text .cond-note  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .cond-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-left: 6px; vertical-align: middle; }
+    .cond-tag.urgent { background: #FDEDEC; color: var(--red); }
+    .cond-tag.ryan   { background: #E8F3FF; color: var(--accent); }
+    .cond-tag.maria  { background: #FFF6E0; color: #C07E00; }
+    .cond-tag.both   { background: #E9F7EF; color: var(--green); }
+
+    /* ── NOTE CARDS ── */
+    .note-card {
+      background: #FFF6E0; border: 1px solid #F5A623;
+      border-radius: 14px; padding: 18px 20px;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .note-card .note-icon { font-size: 22px; flex-shrink: 0; }
+    .note-card .note-text { font-size: 14px; color: #7A5000; line-height: 1.5; }
+    .note-card .note-text strong { color: #5A3800; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,.8);
+      text-align: center; padding: 28px 16px;
+      font-size: 13px; line-height: 1.7;
+    }
+    footer strong { color: #fff; }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- PIN GATE -->
+<div id="pin-gate">
+  <div class="gate-logo">
+    <strong>Patrick Festa · FMFS</strong>
+    Mortgage Agent | Life Insurance Agent | Mutual Fund Agent
+  </div>
+  <h2>Your Mortgage Commitment</h2>
+  <p>Enter your 4-digit access code to view your commitment summary.</p>
+  <div class="pin-inputs">
+    <input type="password" maxlength="1" inputmode="numeric" pattern="[0-9]" id="p1" />
+    <input type="password" maxlength="1" inputmode="numeric" pattern="[0-9]" id="p2" />
+    <input type="password" maxlength="1" inputmode="numeric" pattern="[0-9]" id="p3" />
+    <input type="password" maxlength="1" inputmode="numeric" pattern="[0-9]" id="p4" />
+  </div>
+  <div id="pin-error"></div>
+  <button id="pin-submit">View My Commitment</button>
+  <p class="gate-note">Access code provided by Patrick Festa · patrick@fmfs.ca</p>
+</div>
+
+<!-- PAGE CONTENT -->
+<div id="page-content">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="approved-pill">Approved</div>
+  <h1>Ryan & Maria — Here's Your<br>Mortgage in Plain English</h1>
+  <p class="subtitle">Manulife Bank has approved your refinance. Here's exactly what it means, what you owe, and what you need to do next.</p>
+  <div class="meta-row">
+    <div class="meta-chip"><strong>$320,000</strong>Total Loan</div>
+    <div class="meta-chip"><strong>709-2929 Aquitaine Ave</strong>Subject Property</div>
+    <div class="meta-chip"><strong>July 31, 2026</strong>Closing Date</div>
+    <div class="meta-chip"><strong>Refinance</strong>Deal Type</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- WHAT IS THIS -->
+  <p class="section-label">What Is This?</p>
+  <div class="card">
+    <h2>You're swapping your old mortgage for a smarter one.</h2>
+    <p>Your current First National mortgage ($322,000 at <strong>Prime minus 1.00%</strong> variable) is being replaced with a <strong>Manulife One account</strong> — a two-part structure that gives you a flexible line of credit plus a locked-in fixed payment. The total you're borrowing is $320,000.</p>
+  </div>
+
+  <!-- THE TWO PARTS -->
+  <p class="section-label">Your Loan — Two Parts</p>
+  <div class="loan-grid">
+
+    <div class="loan-card part1">
+      <div class="part-label">Part 1 — Line of Credit (HELOC)</div>
+      <div class="amount">$250,000</div>
+      <div class="rate-badge">5.20% — Variable</div>
+      <div class="detail-row"><span class="label">Type</span><span class="value">Open (flexible)</span></div>
+      <div class="detail-row"><span class="label">Rate moves with</span><span class="value">Manulife Base Rate</span></div>
+      <div class="detail-row"><span class="label">Required payment</span><span class="value">Interest only</span></div>
+      <div class="detail-row"><span class="label">Pay it off early?</span><span class="value">Yes, any time — no penalty</span></div>
+      <div class="heloc-explainer">
+        <strong>Think of it like a smart chequing account.</strong>
+        Any money you deposit into this account immediately reduces what you owe — which lowers your interest. You can withdraw it again if you need to. Your salary, rental income, and savings can all work harder here.
+      </div>
+    </div>
+
+    <div class="loan-card part2">
+      <div class="part-label">Part 2 — Fixed Sub-Account</div>
+      <div class="amount">$70,000</div>
+      <div class="rate-badge">4.89% — Fixed</div>
+      <div class="detail-row"><span class="label">Type</span><span class="value">Closed (3-year term)</span></div>
+      <div class="detail-row"><span class="label">Monthly payment</span><span class="value">$369 / month</span></div>
+      <div class="detail-row"><span class="label">First payment</span><span class="value">Aug 31, 2026</span></div>
+      <div class="detail-row"><span class="label">Amortization</span><span class="value">30 years</span></div>
+      <div class="detail-row"><span class="label">Term ends</span><span class="value">July 31, 2029</span></div>
+      <div class="detail-row"><span class="label">Pay it off early?</span><span class="value">Up to 20%/year penalty-free</span></div>
+    </div>
+  </div>
+
+  <div class="note-card" style="margin-top:14px;">
+    <div class="note-icon">💡</div>
+    <div class="note-text">
+      <strong>Monthly account fee: $16.95</strong> — The Manulife One account works like an all-in-one bank account + mortgage. This small monthly fee covers unlimited daily banking transactions. If you're 60 or older, the fee drops to $9.95.
+    </div>
+  </div>
+
+  <!-- RATE SENSITIVITY SLIDER -->
+  <p class="section-label">What If Rates Change?</p>
+  <div class="slider-card">
+    <h2>Your Variable Rate (Part 1) — Rate Sensitivity</h2>
+    <p class="slider-sub">The $250,000 HELOC moves with the Manulife One Base Rate. Drag the slider to see how your monthly interest changes.</p>
+    <div class="rate-display">
+      <div class="big-rate" id="rateDisplay">5.20%</div>
+      <div class="rate-label">annual interest rate on $250,000</div>
+    </div>
+    <input type="range" id="rateSlider" min="350" max="750" step="10" value="520" />
+    <div class="slider-ticks">
+      <span>3.50%</span><span>4.50%</span><span>5.20% (today)</span><span>6.50%</span><span>7.50%</span>
+    </div>
+    <div class="payment-breakdown">
+      <div class="payment-row">
+        <span class="p-label">Monthly interest on $250K HELOC</span>
+        <span class="p-val" id="helocInterest">$1,083</span>
+      </div>
+      <div class="payment-row">
+        <span class="p-label">Fixed sub-account payment (Part 2)</span>
+        <span class="p-val">$369</span>
+      </div>
+      <div class="payment-row">
+        <span class="p-label">Manulife One account fee</span>
+        <span class="p-val">$17</span>
+      </div>
+      <div class="payment-row total">
+        <span class="p-label">Estimated Monthly Total</span>
+        <span class="p-val" id="totalMonthly">$1,469</span>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:10px;">* HELOC interest shown on full $250,000 balance. As you pay down the HELOC or deposit savings, your actual interest will be lower. Fixed payment stays at $369 for the 3-year term.</p>
+  </div>
+
+  <!-- WHERE THE MONEY GOES -->
+  <p class="section-label">Where Does the $320,000 Go?</p>
+  <div class="flow-card">
+    <h2>Closing Day Money Flow</h2>
+    <div class="flow-item">
+      <div class="flow-icon in">🏦</div>
+      <div class="flow-text">
+        <div class="flow-title">Manulife advances funds to your lawyer</div>
+        <div class="flow-amt">Amount: <strong>$319,980</strong></div>
+      </div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-icon out">🔑</div>
+      <div class="flow-text">
+        <div class="flow-title">Pays off your First National mortgage in full</div>
+        <div class="flow-amt">Amount: <strong>$316,709</strong> — your old mortgage is gone</div>
+      </div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-icon fee">⚖️</div>
+      <div class="flow-text">
+        <div class="flow-title">Remaining balance covers legal and closing fees</div>
+        <div class="flow-amt">Approx. <strong>$3,271</strong> to cover lawyer, registration, and admin costs</div>
+      </div>
+    </div>
+    <div class="flow-item">
+      <div class="flow-icon out" style="background:#FDEDEC;">⚠️</div>
+      <div class="flow-text">
+        <div class="flow-title">Simplii debt — paid by you, not from the mortgage</div>
+        <div class="flow-amt">You must pay off your <strong>Simplii balance of $3,673</strong> from your own funds before closing</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEXT STEP CTA -->
+  <p class="section-label">What Happens Next</p>
+  <div class="card" style="border:2px solid var(--green);background:#F0FBF4;">
+    <h2 style="color:var(--green);">No issues with the commitment? Here's your next step.</h2>
+    <p style="color:#1A5C38;margin-top:8px;font-size:15px;">Once you've reviewed this and everything looks good, let Patrick know and he'll ask the <strong>8Twelve fulfillment department</strong> to send the official package to each of you for your <strong>electronic signatures</strong>. That's what makes this mortgage official.</p>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid #B7E4C7;display:flex;flex-wrap:wrap;gap:10px;">
+      <a href="mailto:patrick@fmfs.ca?subject=Commitment%20Approved%20-%20Ryan%20%26%20Maria&body=Hi%20Patrick%2C%20we%20have%20reviewed%20the%20commitment%20and%20have%20no%20issues.%20Please%20send%20the%20official%20package%20for%20our%20signatures." style="display:inline-block;background:var(--green);color:#fff;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:700;font-size:14px;">Email Patrick — Looks Good, Send the Package</a>
+      <a href="https://www.MeetWithFesta.ca" target="_blank" style="display:inline-block;background:#fff;color:var(--green);border:2px solid var(--green);text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:700;font-size:14px;">Book a Call With Patrick</a>
+    </div>
+  </div>
+
+  <!-- CONDITIONS CHECKLIST -->
+  <p class="section-label">Your To-Do List Before Closing</p>
+  <div class="conditions-card">
+    <h2>What Manulife Needs From You</h2>
+    <p class="deadline-note">All conditions must be met by approximately July 15, 2026 (10 business days before closing).</p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Tap any item to mark it done.</p>
+
+    <div class="condition-item" onclick="toggleDone(this)">
+      <div class="condition-check"></div>
+      <div class="condition-text">
+        <div class="cond-title">Sign and return this commitment letter <span class="cond-tag urgent">Urgent</span></div>
+        <div class="cond-note">Both Ryan and Maria must sign. Do this first.</div>
+      </div>
+    </div>
+    <div class="condition-item" onclick="toggleDone(this)">
+      <div class="condition-check"></div>
+      <div class="condition-text">
+        <div class="cond-title">Employment letter + paystub for Ryan <span class="cond-tag ryan">Ryan</span></div>
+        <div class="cond-note">Must confirm annual salary of $103,000 at KFI Inc. Verbal verification will also be done.</div>
+      </div>
+    </div>
+    <div class="condition-item" onclick="toggleDone(this)">
+      <div class="condition-check"></div>
+      <div class="condition-text">
+        <div class="cond-title">Employment letter + paystub for Maria <span class="cond-tag maria">Maria</span></div>
+        <div class="cond-note">Must confirm annual salary of $93,937 at City of Mississauga. Verbal verification will also be done.</div>
+      </div>
+    </div>
+    <div class="condition-item" onclick="toggleDone(this)">
+      <div class="condition-check"></div>
+      <div class="condition-text">
+        <div class="cond-title">Pay off your Simplii balance <span class="cond-tag urgent">Urgent</span></div>
+        <div class="cond-note">$3,673 must be cleared in full and confirmed before closing day.</div>
+      </div>
+    </div>
+    <div class="condition-item" onclick="toggleDone(this)">
+      <div class="condition-check"></div>
+      <div class="condition-text">
+        <div class="cond-title">Confirm condo fees don't exceed $1,038/month <span class="cond-tag both">Both</span></div>
+        <div class="cond-note">Provide documentation (condo status certificate or fee statement) confirming this amount.</div>
+      </div>
+    </div>
+    <div class="condition-item" onclick="toggleDone(this)">
+      <div class="condition-check"></div>
+      <div class="condition-text">
+        <div class="cond-title">Provide most recent property tax bill <span class="cond-tag both">Both</span></div>
+        <div class="cond-note">For 709-2929 Aquitaine Avenue, Mississauga.</div>
+      </div>
+    </div>
+    <div class="condition-item" onclick="toggleDone(this)">
+      <div class="condition-check"></div>
+      <div class="condition-text">
+        <div class="cond-title">Void cheque + Manulife Funds Transfer Agreement <span class="cond-tag both">Both</span></div>
+        <div class="cond-note">This links your Manulife One account to your other bank so you can move money in and out easily.</div>
+      </div>
+    </div>
+    <div class="condition-item" onclick="toggleDone(this)">
+      <div class="condition-check"></div>
+      <div class="condition-text">
+        <div class="cond-title">Set up fire insurance on the property <span class="cond-tag both">Both</span></div>
+        <div class="cond-note">Must cover full replacement value. Manulife Bank of Canada must be listed as 1st Loss Payee.</div>
+      </div>
+    </div>
+    <div class="condition-item" onclick="toggleDone(this)">
+      <div class="condition-check"></div>
+      <div class="condition-text">
+        <div class="cond-title">Choose and confirm your lawyer/solicitor <span class="cond-tag both">Both</span></div>
+        <div class="cond-note">You pick the law firm. Provide their name, address, phone and fax to Patrick.</div>
+      </div>
+    </div>
+    <div class="condition-item" onclick="toggleDone(this)">
+      <div class="condition-check"></div>
+      <div class="condition-text">
+        <div class="cond-title">Appraisal ordered and completed <span class="cond-tag both">Both</span></div>
+        <div class="cond-note">Must come in at $500,000. Patrick will coordinate through a Manulife-approved appraiser.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMPORTANT REMINDERS -->
+  <p class="section-label">A Few Things to Know</p>
+
+  <div class="note-card" style="margin-bottom:14px;">
+    <div class="note-icon">📅</div>
+    <div class="note-text">
+      <strong>This commitment expires July 31, 2026.</strong> If your closing date needs to change, contact Patrick at least 48 hours before the scheduled date or your rate will not be honoured.
+    </div>
+  </div>
+
+  <div class="note-card" style="margin-bottom:14px;background:#E9F7EF;border-color:#27AE60;">
+    <div class="note-icon">💰</div>
+    <div class="note-text" style="color:#1A5C38;">
+      <strong>The HELOC is your financial power tool.</strong> The more money you park in your $250,000 account — even temporarily — the less interest you pay. Run your salary through it, keep your savings in it, and your effective cost of borrowing can drop significantly below the stated rate.
+    </div>
+  </div>
+
+  <div class="note-card" style="background:#FDEDEC;border-color:#E74C3C;">
+    <div class="note-icon">🔒</div>
+    <div class="note-text" style="color:#7B2D2D;">
+      <strong>The $70,000 fixed sub-account is locked for 3 years.</strong> You can prepay up to 20% of the original balance per year without penalty. Paying more than that triggers a prepayment charge (3 months' interest or interest rate differential — whichever is higher).
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <strong>Patrick Festa · FMFS</strong><br>
+  Mortgage Agent &nbsp;|&nbsp; Life Insurance Agent &nbsp;|&nbsp; Mutual Fund Agent<br>
+  <a href="mailto:patrick@fmfs.ca">patrick@fmfs.ca</a> &nbsp;·&nbsp; <a href="https://www.MeetWithFesta.ca" target="_blank">MeetWithFesta.ca</a><br>
+  <span style="font-size:11px;color:rgba(255,255,255,.4);margin-top:8px;display:block;">This document is a plain-language summary of your Manulife Bank Mortgage Commitment (Ref #1100825, dated June 25, 2026). It is not a legal document. Please refer to the original commitment letter for full terms and conditions.</span>
+</footer>
+
+</div><!-- /page-content -->
+
+<script>
+  // ── PIN GATE ──
+  const CORRECT_PIN = '0825';
+  const inputs = [document.getElementById('p1'), document.getElementById('p2'), document.getElementById('p3'), document.getElementById('p4')];
+
+  inputs.forEach((input, i) => {
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/[^0-9]/g, '');
+      if (input.value.length === 1 && i < 3) inputs[i + 1].focus();
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && input.value === '' && i > 0) inputs[i - 1].focus();
+      if (e.key === 'Enter') checkPin();
+    });
+  });
+
+  inputs[0].focus();
+
+  document.getElementById('pin-submit').addEventListener('click', checkPin);
+
+  function checkPin() {
+    const entered = inputs.map(i => i.value).join('');
+    if (entered === CORRECT_PIN) {
+      document.getElementById('pin-gate').style.display = 'none';
+      document.getElementById('page-content').style.display = 'block';
+    } else {
+      document.getElementById('pin-error').textContent = 'Incorrect code. Please try again.';
+      inputs.forEach(i => i.value = '');
+      inputs[0].focus();
+    }
+  }
+
+  // ── RATE SLIDER ──
+  const slider = document.getElementById('rateSlider');
+  const rateDisplay = document.getElementById('rateDisplay');
+  const helocInterest = document.getElementById('helocInterest');
+  const totalMonthly = document.getElementById('totalMonthly');
+
+  function updateSlider() {
+    const bps = parseInt(slider.value);
+    const rate = bps / 100;
+    const monthly = (250000 * (rate / 100)) / 12;
+    const total = monthly + 369 + 16.95;
+    rateDisplay.textContent = rate.toFixed(2) + '%';
+    helocInterest.textContent = '$' + Math.round(monthly).toLocaleString();
+    totalMonthly.textContent = '$' + Math.round(total).toLocaleString();
+    const pct = ((bps - 350) / 400) * 100;
+    slider.style.background = `linear-gradient(to right, #2E86DE 0%, #2E86DE ${pct}%, #DDE3EE ${pct}%)`;
+  }
+
+  slider.addEventListener('input', updateSlider);
+  updateSlider();
+
+  // ── CHECKLIST ──
+  function toggleDone(el) {
+    el.classList.toggle('done');
+    el.querySelector('.condition-check').textContent = el.classList.contains('done') ? '✓' : '';
+  }
+</script>
+
+</body>
+</html>
